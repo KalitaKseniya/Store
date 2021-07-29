@@ -11,7 +11,7 @@ namespace Store.Infrastructure
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-        public RepositoryContext(DbContextOptions opt): base(opt)
+        public RepositoryContext(DbContextOptions<RepositoryContext> opt): base(opt)
         {}
     }
 }

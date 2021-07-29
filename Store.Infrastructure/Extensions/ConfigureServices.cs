@@ -15,8 +15,8 @@ namespace Store.Infrastructure.Extensions
         public static IServiceCollection RegisterInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<RepositoryContext>(opt =>
-                    opt.UseSqlServer(configuration.GetConnectionString("sqlConnection"),
-                    b => b.MigrationsAssembly("Store")));
+                    opt.UseSqlServer(configuration.GetConnectionString("sqlConnection")
+                    ));
             return services;
         }
     }
