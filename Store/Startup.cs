@@ -7,9 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NLog;
+using Store.Application;
 using Store.Infrastructure.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,10 +30,12 @@ namespace Store
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            LogManager.LoadConfiguration(Directory.GetCurrentDirectory() + "/nlog.config");
             services.AddControllers();
 
             services.RegisterInfrastructure(Configuration);
+            
+            services.ConfigureLogger();
 
             services.AddSwaggerGen(c =>
             {

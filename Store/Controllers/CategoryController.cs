@@ -14,9 +14,11 @@ namespace Store.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository categoryRepository;
-        public CategoryController(ICategoryRepository _categoryRepository)
+        private readonly ILoggerManager logger;
+        public CategoryController(ICategoryRepository _categoryRepository, ILoggerManager _logger)
         {
             categoryRepository = _categoryRepository;
+            logger = _logger;
         }
         [HttpGet]
         public IActionResult GetCategories()
@@ -24,7 +26,8 @@ namespace Store.Controllers
             var categories = categoryRepository.Get();
             if(categories == null)
             {
-                return Ok("No categories in db.");
+                logger.Warn("No categories in db.");
+                return NoContent();
             }
             return Ok(categories);
         }
@@ -35,6 +38,7 @@ namespace Store.Controllers
             var category = categoryRepository.GetById(id);
             if(category == null)
             {
+                logger.Warn($"No category with given id = {id}.");
                 return NotFound($"No category with given id = {id}.");
             }
             return Ok(category);
@@ -45,6 +49,7 @@ namespace Store.Controllers
         {
             if(category == null)
             {
+                logger.Error($"Can't add category=null.");
                 return BadRequest("Can't add category=null");
             }
             categoryRepository.Create(category);
