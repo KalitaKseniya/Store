@@ -9,12 +9,14 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NLog;
 using Store.Application;
+using Store.Core.Interfaces;
 using Store.Infrastructure.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Store.Extensions;
 
 namespace Store
 {
@@ -44,7 +46,7 @@ namespace Store
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
@@ -52,7 +54,8 @@ namespace Store
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Store v1"));
             }
-
+            
+            app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
 
             app.UseRouting();
