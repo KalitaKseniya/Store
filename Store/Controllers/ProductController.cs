@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Store.Controllers
 {
-    [ApiController]
     [Route("api/categories/{category_id}/products")]
+    [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class ProductController : ControllerBase
     {
         private readonly ILoggerManager logger;
@@ -23,6 +24,9 @@ namespace Store.Controllers
             categoryRepository = _categoryRepository;
         }
 
+        /// <summary>
+        /// Get the list of all products for the specified category
+        /// </summary>
         [HttpGet]
         public IActionResult GetProductsForCategory(int category_id)
         {
@@ -41,6 +45,9 @@ namespace Store.Controllers
             return Ok(products);
         }
         
+        /// <summary>
+        /// Get the product by id for the specified category
+        /// </summary>
         [HttpGet("{id}")]
         public IActionResult GetProduct(int category_id, int id)
         {
@@ -60,7 +67,11 @@ namespace Store.Controllers
 
             return Ok(product);
         }
-        
+
+
+        /// <summary>
+        /// Create a product for the specified category
+        /// </summary>
         [HttpPost]
         public IActionResult CreateProduct(int category_id, ProductForCreationDTO productDTO)
         {

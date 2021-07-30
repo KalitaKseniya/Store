@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Store</name>
+    </assembly>
+    <members>
+        <member name="M:Store.Controllers.CategoryController.GetCategories">
+            <summary>
+            Get the list of all categories
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.CategoryController.GetCategory(System.Int32)">
+            <summary>
+            Get the category by id
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.CategoryController.CreateCategory(Store.Core.Entities.Category)">
+            <summary>
+            Create a category
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProductController.GetProductsForCategory(System.Int32)">
+            <summary>
+            Get the list of all products for the specified category
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProductController.GetProduct(System.Int32,System.Int32)">
+            <summary>
+            Get the product by id for the specified category
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProductController.CreateProduct(System.Int32,Store.Core.Entities.ProductForCreationDTO)">
+            <summary>
+            Create a product for the specified category
+            </summary>
+        </member>
+    </members>
+</doc>

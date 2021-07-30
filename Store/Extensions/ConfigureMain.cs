@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Builder;
 using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace Store.Extensions
 {
@@ -35,5 +38,13 @@ namespace Store.Extensions
                 });
             });
         }
+        public static void ConfigureVersioning(this IServiceCollection services)
+            => services.AddApiVersioning(opt => 
+            {
+                opt.ReportApiVersions = true;
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new ApiVersion(1, 0);
+                //opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
+            });
     }
 }

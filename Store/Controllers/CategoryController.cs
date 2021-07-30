@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace Store.Controllers
 {
-    [ApiController]
     [Route("api/categories")]
+    [ApiController]
+    [ApiExplorerSettings(GroupName ="v1")]
+    
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository categoryRepository;
@@ -20,6 +22,9 @@ namespace Store.Controllers
             categoryRepository = _categoryRepository;
             logger = _logger;
         }
+        /// <summary>
+        /// Get the list of all categories
+        /// </summary>
         [HttpGet]
         public IActionResult GetCategories()
         {
@@ -27,11 +32,14 @@ namespace Store.Controllers
             if(categories == null)
             {
                 logger.Warn("No categories in db.");
-                return NoContent();
+                return NotFound("No categories in db.");
             }
             return Ok(categories);
         }
 
+        /// <summary>
+        /// Get the category by id
+        /// </summary>
         [HttpGet("{id}")]
         public IActionResult GetCategory(int id)
         {
@@ -44,6 +52,9 @@ namespace Store.Controllers
             return Ok(category);
         }
 
+        /// <summary>
+        /// Create a category
+        /// </summary>
         [HttpPost]
         public IActionResult CreateCategory(Category category)
         {
