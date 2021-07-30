@@ -19,6 +19,7 @@ namespace Store.Infrastructure.Extensions
                     opt.UseSqlServer(configuration.GetConnectionString("sqlConnection")
                     ));
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             return services;
         }
     }
