@@ -29,9 +29,16 @@
             Get the product by id for the specified category
             </summary>
         </member>
-        <member name="M:Store.Controllers.ProductController.CreateProduct(System.Int32,Store.Core.Entities.ProductForCreationDTO)">
+        <member name="M:Store.Controllers.ProductController.CreateProduct(System.Int32,Store.Core.DTO.ProductForCreationDTO)">
             <summary>
             Create a product for the specified category
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProductV2Controller.GetCurrency(System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Get the product by id for the specified category.
+            You could choose city (write in Russian) and currency.
+             Allowed curr: USD, EUR, RUB, GBP, CAD, PLN, UAH, SEK, CHF, JPY, CNY, CZK, NOK.
             </summary>
         </member>
         <member name="T:Store.Swagger.ConfigureSwaggerOptions">

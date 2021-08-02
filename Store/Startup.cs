@@ -22,6 +22,7 @@ namespace Store
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(Directory.GetCurrentDirectory() + "/nlog.config");
             Configuration = configuration;
         }
 
@@ -30,12 +31,12 @@ namespace Store
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            LogManager.LoadConfiguration(Directory.GetCurrentDirectory() + "/nlog.config");
             services.AddControllers();
 
             services.RegisterInfrastructure(Configuration);
 
             services.ConfigureLogger();
+            services.ConfigureCurrencies();
             services.ConfigureSwaggerVersioning();
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen(options =>

@@ -5,7 +5,7 @@ namespace Store.Application.Services
 {
     public class LoggerManager : ILoggerManager
     {
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger logger = LogManager.GetCurrentClassLogger();
         public void Warn(string message)
         {
             logger.Warn(message);

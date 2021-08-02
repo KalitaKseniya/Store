@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Store.Application.Services;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 using System.Net;
@@ -52,5 +53,8 @@ namespace Store.Extensions
                     options.SubstituteApiVersionInUrl = true;
                 });
         }
+
+        public static void ConfigureCurrencies(this IServiceCollection services) 
+            => services.AddScoped<ICurrencyService, CurrencyService>();
     }
 }

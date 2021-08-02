@@ -1,4 +1,4 @@
-﻿namespace Store.Core.Entities
+﻿namespace Store.Core.DTO
 {
     public class ProductForCreationDTO
     {
