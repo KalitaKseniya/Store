@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Store.Core.Interfaces;
-using Store.Core.Entities;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using System.Net;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
+using Store.Core.Entities;
+using Store.Core.Interfaces;
+using System.Net;
 
 namespace Store.Extensions
 {

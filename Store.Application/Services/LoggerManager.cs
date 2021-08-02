@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NLog;
+﻿using NLog;
 using Store.Core.Interfaces;
 
 namespace Store.Application.Services
 {
-    public class LoggerManager: ILoggerManager
+    public class LoggerManager : ILoggerManager
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public void Warn(string message)

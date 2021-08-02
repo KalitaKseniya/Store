@@ -1,10 +1,7 @@
-﻿using Store.Core.Interfaces;
-using System;
+﻿using Store.Core.Entities;
+using Store.Core.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Store.Core.Entities;
 
 namespace Store.Infrastructure.Repositories
 {

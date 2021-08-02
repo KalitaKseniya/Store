@@ -1,27 +1,20 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Options;
 using NLog;
 using Store.Application;
 using Store.Core.Interfaces;
-using Store.Infrastructure.Extensions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Store.Extensions;
-using System.Reflection;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Store.Infrastructure.Extensions;
 using Store.Swagger;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Store
 {
@@ -41,7 +34,7 @@ namespace Store
             services.AddControllers();
 
             services.RegisterInfrastructure(Configuration);
-            
+
             services.ConfigureLogger();
             services.ConfigureSwaggerVersioning();
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -49,7 +42,7 @@ namespace Store
             {
                 // add a custom operation filter which sets default values
                 options.OperationFilter<SwaggerDefaultValues>();
-                
+
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
@@ -70,7 +63,7 @@ namespace Store
                         options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
                 });
             }
-            
+
             app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
 

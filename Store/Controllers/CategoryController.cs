@@ -1,25 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Store.Controllers
-{    
+{
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/categories")]
     public class CategoryController : ControllerBase
     {
-        private readonly ICategoryRepository categoryRepository;
-        private readonly ILoggerManager logger;
-        public CategoryController(ICategoryRepository _categoryRepository, ILoggerManager _logger)
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly ILoggerManager _logger;
+        public CategoryController(ICategoryRepository categoryRepository, ILoggerManager logger)
         {
-            categoryRepository = _categoryRepository;
-            logger = _logger;
+            _categoryRepository = categoryRepository;
+            _logger = logger;
         }
         /// <summary>
         /// Get the list of all categories
@@ -27,10 +22,10 @@ namespace Store.Controllers
         [HttpGet]
         public IActionResult GetCategories()
         {
-            var categories = categoryRepository.Get();
-            if(categories == null)
+            var categories = _categoryRepository.Get();
+            if (categories == null)
             {
-                logger.Warn("No categories in db.");
+                _logger.Warn("No categories in db.");
                 return NotFound("No categories in db.");
             }
             return Ok(categories);
@@ -42,10 +37,10 @@ namespace Store.Controllers
         [HttpGet("{id}")]
         public IActionResult GetCategory(int id)
         {
-            var category = categoryRepository.GetById(id);
-            if(category == null)
+            var category = _categoryRepository.GetById(id);
+            if (category == null)
             {
-                logger.Warn($"No category with given id = {id}.");
+                _logger.Warn($"No category with given id = {id}.");
                 return NotFound($"No category with given id = {id}.");
             }
             return Ok(category);
@@ -57,13 +52,13 @@ namespace Store.Controllers
         [HttpPost]
         public IActionResult CreateCategory(Category category)
         {
-            if(category == null)
+            if (category == null)
             {
-                logger.Error($"Can't add category=null.");
+                _logger.Error($"Can't add category=null.");
                 return BadRequest("Can't add category=null");
             }
-            categoryRepository.Create(category);
-            categoryRepository.Save();
+            _categoryRepository.Create(category);
+            _categoryRepository.Save();
 
             return CreatedAtAction(nameof(CreateCategory), category);
         }

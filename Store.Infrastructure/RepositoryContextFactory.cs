@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Store.Infrastructure
 {
-    class RepositoryContextFactory: IDesignTimeDbContextFactory<RepositoryContext>
+    class RepositoryContextFactory : IDesignTimeDbContextFactory<RepositoryContext>
     {
         public RepositoryContext CreateDbContext(string[] args)
         {
@@ -22,5 +22,5 @@ namespace Store.Infrastructure
 
             return new RepositoryContext(optionsBuilder.Options);
         }
-    }  
+    }
 }

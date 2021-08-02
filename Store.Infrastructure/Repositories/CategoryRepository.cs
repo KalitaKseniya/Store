@@ -1,14 +1,11 @@
-﻿using System;
+﻿using Store.Core.Entities;
+using Store.Core.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Store.Core.Entities;
-using Store.Core.Interfaces;
 
 namespace Store.Infrastructure.Repositories
 {
-    public class CategoryRepository: ICategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly RepositoryContext repository;
         public CategoryRepository(RepositoryContext _repository)
