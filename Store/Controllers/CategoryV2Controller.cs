@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace Store.Controllers
 {
-    [Route("api/categories")]
     [ApiController]
-    [ApiExplorerSettings(GroupName = "v2")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/categories")]
+    //[ApiExplorerSettings(GroupName = "v2")]
     //curr->currency
     public class CategoryV2Controller : ControllerBase
     {

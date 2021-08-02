@@ -7,10 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.Controllers
-{
-    [Route("api/categories/{category_id}/products")]
+{  
     [ApiController]
-    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/categories/{category_id}/products")]
     public class ProductController : ControllerBase
     {
         private readonly ILoggerManager logger;

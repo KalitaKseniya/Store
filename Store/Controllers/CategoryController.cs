@@ -8,11 +8,10 @@ using System.Net;
 using System.Threading.Tasks;
 
 namespace Store.Controllers
-{
-    [Route("api/categories")]
+{    
     [ApiController]
-    [ApiExplorerSettings(GroupName ="v1")]
-    
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/categories")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository categoryRepository;
