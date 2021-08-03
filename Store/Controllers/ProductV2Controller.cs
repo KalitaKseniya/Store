@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Store.Core.Entities;
 using Store.Core.Interfaces;
-using System;
 using System.Threading.Tasks;
 
 namespace Store.Controllers
@@ -31,22 +29,22 @@ namespace Store.Controllers
         ///  Allowed curr: USD, EUR, RUB, GBP, CAD, PLN, UAH, SEK, CHF, JPY, CNY, CZK, NOK.
         /// </summary>
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCurrency(int category_id, int id, [FromQuery]string curr = "BYN", [FromQuery]string city = "Полоцк")
+        public async Task<IActionResult> GetCurrency(int category_id, int id, [FromQuery] string curr = "BYN", [FromQuery] string city = "Полоцк")
         {
             var category = _categoryRepository.GetById(category_id);
-            if(category == null)
+            if (category == null)
             {
                 _logger.Error($"There is no category with id = {category_id} in db.");
                 return NotFound($"There is no category with id = {category_id} in db.");
             }
-            
+
             var product = _productRepository.GetById(category_id, id);
-            if(product == null)
+            if (product == null)
             {
                 _logger.Error($"There is no product with id = {id} for the category with id = {category_id} in db.");
                 return NotFound($"There is no product with id = {id} for the category with id = {category_id} in db.");
             }
-            
+
             var productForCurrencyDTO = await _currencyService.GetProductForCurrency(product, curr, city);
             if (productForCurrencyDTO == null)
             {

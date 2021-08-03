@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Store.Core.Interfaces;
-
-namespace Store.Controllers
+﻿namespace Store.Controllers
 {
     //[ApiController]
     //[ApiVersion("2.0")]

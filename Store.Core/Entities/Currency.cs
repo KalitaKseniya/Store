@@ -35,7 +35,7 @@ namespace Store.Core.Entities
 
         [JsonConstructor]
         public Currency(decimal USD_out, decimal EUR_out, decimal RUB_out, decimal GBP_out, decimal CAD_out,
-                        decimal PLN_out, decimal UAH_out, decimal SEK_out, decimal CHF_out, decimal JPY_out, 
+                        decimal PLN_out, decimal UAH_out, decimal SEK_out, decimal CHF_out, decimal JPY_out,
                         decimal CNY_out, decimal CZK_out, decimal NOK_out
             )
         {

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
-using Store.Core.DTO;
 
 namespace Store.Application.Services
 {
@@ -23,19 +23,19 @@ namespace Store.Application.Services
         }
         public async Task<ProductForCurrencyDTO> GetProductForCurrency(Product product, string curr, string city)
         {
-            string url = urlTemplate.Replace("{city}", city); 
+            string url = urlTemplate.Replace("{city}", city);
             decimal convertedPrice = 1;
             if (curr.ToUpper() != "BYN")
             {
                 await UpdateCurrDict(url);
-                
+
                 if (_currDict.TryGetValue(curr.ToUpper(), out convertedPrice) == false ||
                                                                convertedPrice == 0)
                 {
                     return null;
                 }
             }
-            
+
             return GetConvertedProduct(product, curr, convertedPrice);
         }
         #region protected methods

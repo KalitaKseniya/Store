@@ -54,7 +54,7 @@ namespace Store.Extensions
                 });
         }
 
-        public static void ConfigureCurrencies(this IServiceCollection services) 
+        public static void ConfigureCurrencies(this IServiceCollection services)
             => services.AddScoped<ICurrencyService, CurrencyService>();
     }
 }

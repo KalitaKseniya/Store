@@ -7,8 +7,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
+COPY "Store.sln" ./
 COPY ["Store/Store.csproj", "Store/"]
-RUN dotnet restore "Store/Store.csproj"
+COPY ["Store.Application/Store.Application.csproj", "./Store.Application/"]
+COPY ["Store.Infrastructure/Store.Infrastructure.csproj", "./Store.Infrastructure/"]
+COPY ["Store.Core/Store.Core.csproj", "./Store.Core/"]
+
+RUN dotnet restore 
 COPY . .
 WORKDIR "/src/Store"
 RUN dotnet build "Store.csproj" -c Release -o /app/build

@@ -1,6 +1,6 @@
-﻿using Store.Core.Entities;
+﻿using Store.Core.DTO;
+using Store.Core.Entities;
 using System.Threading.Tasks;
-using Store.Core.DTO;
 
 namespace Store.Core.Interfaces
 {
