@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 
@@ -19,7 +20,7 @@ namespace Store.Controllers
         /// <summary>
         /// Get the list of all categories
         /// </summary>
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetCategories()
         {
             var categories = _categoryRepository.Get();

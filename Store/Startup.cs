@@ -33,6 +33,9 @@ namespace Store
         {
             services.AddControllers();
 
+            services.AddAuthentication();
+            services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
             services.RegisterInfrastructure(Configuration);
 
             services.ConfigureLogger();
@@ -70,6 +73,7 @@ namespace Store
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -6,6 +6,13 @@ using Store.Application.Services;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 using System.Net;
+using Microsoft.AspNetCore.Identity;
+using Store.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Store.Extensions
 {
@@ -56,5 +63,49 @@ namespace Store.Extensions
 
         public static void ConfigureCurrencies(this IServiceCollection services)
             => services.AddScoped<ICurrencyService, CurrencyService>();
+    
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            var builder = services.AddIdentityCore<User>(o =>
+            {
+                o.Password.RequireDigit = true;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 10;
+                o.User.RequireUniqueEmail = true;
+            });
+
+            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+            builder.AddEntityFrameworkStores<RepositoryContext>()
+                .AddDefaultTokenProviders();
+        }
+    
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuraton)
+        {
+            var jwtSettings = configuraton.GetSection("JwtSettings");
+            var secretKey = Environment.GetEnvironmentVariable("SECRET");
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidAudience = jwtSettings.GetSection("validAudience").Value,
+                    ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                };
+            });
+        
+        }
     }
 }
