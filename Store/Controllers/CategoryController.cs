@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 
 namespace Store.Controllers
 {
+    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/categories")]
@@ -20,7 +22,7 @@ namespace Store.Controllers
         /// <summary>
         /// Get the list of all categories
         /// </summary>
-        [HttpGet, Authorize]
+        [HttpGet]
         public IActionResult GetCategories()
         {
             var categories = _categoryRepository.Get();
@@ -50,14 +52,18 @@ namespace Store.Controllers
         /// <summary>
         /// Create a category
         /// </summary>
-        [HttpPost]
-        public IActionResult CreateCategory(Category category)
+        [HttpPost, Authorize(Roles = UserRoles.Administrator)]
+        public IActionResult CreateCategory([FromBody]CategoryForCreationDTO categoryForCreationDTO)
         {
-            if (category == null)
+            if (categoryForCreationDTO == null)
             {
                 _logger.Error($"Can't add category=null.");
                 return BadRequest("Can't add category=null");
             }
+            var category = new Category
+            {
+                Name = categoryForCreationDTO.Name
+            };
             _categoryRepository.Create(category);
             _categoryRepository.Save();
 

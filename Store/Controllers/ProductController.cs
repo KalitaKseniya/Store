@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 
 namespace Store.Controllers
 {
+    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/categories/{category_id}/products")]
@@ -69,8 +71,8 @@ namespace Store.Controllers
         /// <summary>
         /// Create a product for the specified category
         /// </summary>
-        [HttpPost]
-        public IActionResult CreateProduct(int category_id, ProductForCreationDTO productDTO)
+        [HttpPost, Authorize(Roles = UserRoles.Administrator)]
+        public IActionResult CreateProduct(int category_id, [FromBody]ProductForCreationDTO productDTO)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)

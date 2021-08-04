@@ -4,6 +4,17 @@
         <name>Store</name>
     </assembly>
     <members>
+        <member name="M:Store.Controllers.AuthenticationController.AuthenicateUser(Store.Core.DTO.UserForAuthenticationDTO)">
+            <summary>
+            Authentication of the user
+            </summary>
+            <returns>Token if the user exists</returns>
+        </member>
+        <member name="M:Store.Controllers.AuthenticationController.RegisterUser(Store.Core.DTO.UserForCreationDTO)">
+            <summary>
+            Registration of the user
+            </summary>
+        </member>
         <member name="M:Store.Controllers.CategoryController.GetCategories">
             <summary>
             Get the list of all categories
@@ -14,7 +25,7 @@
             Get the category by id
             </summary>
         </member>
-        <member name="M:Store.Controllers.CategoryController.CreateCategory(Store.Core.Entities.Category)">
+        <member name="M:Store.Controllers.CategoryController.CreateCategory(Store.Core.DTO.CategoryForCreationDTO)">
             <summary>
             Create a category
             </summary>

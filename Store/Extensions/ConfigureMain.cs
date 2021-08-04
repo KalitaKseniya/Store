@@ -78,7 +78,8 @@ namespace Store.Extensions
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             builder.AddEntityFrameworkStores<RepositoryContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddRoles<IdentityRole>();
         }
     
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuraton)
@@ -102,10 +103,15 @@ namespace Store.Extensions
 
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey+secretKey))
                 };
             });
         
         }
+
+        public static void ConfigureAuthentication(this IServiceCollection services) =>
+            services.AddScoped<IAuthenticationManager, Store.Application.Services.AuthenticationManager>();
     }
 }
+
+

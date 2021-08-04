@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.Core.Interfaces;
 using System.Threading.Tasks;
 
 namespace Store.Controllers
 {
+    [Authorize]
     [ApiController]
     [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/categories/{category_id}/products")]

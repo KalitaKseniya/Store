@@ -36,6 +36,7 @@ namespace Store
             services.AddAuthentication();
             services.ConfigureIdentity();
             services.ConfigureJWT(Configuration);
+            services.ConfigureAuthentication();
             services.RegisterInfrastructure(Configuration);
 
             services.ConfigureLogger();
