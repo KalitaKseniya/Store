@@ -16,6 +16,11 @@ namespace Store.Infrastructure
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
+            
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
         }
     }
 }

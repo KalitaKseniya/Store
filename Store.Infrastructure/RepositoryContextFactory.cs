@@ -9,8 +9,10 @@ namespace Store.Infrastructure
     {
         public RepositoryContext CreateDbContext(string[] args)
         {
+            var solutionDir = (Directory.GetCurrentDirectory()).Replace("Store.Infrastructure","Store");//replace store.infrastructure to store ()
+            
             var configuration = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
+               .SetBasePath(solutionDir)
                .AddJsonFile("appsettings.json")
                .Build();
 

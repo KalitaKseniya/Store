@@ -68,11 +68,11 @@ namespace Store.Extensions
         {
             var builder = services.AddIdentityCore<User>(o =>
             {
-                o.Password.RequireDigit = true;
+                o.Password.RequireDigit = false;
                 o.Password.RequireLowercase = false;
                 o.Password.RequireUppercase = false;
                 o.Password.RequireNonAlphanumeric = false;
-                o.Password.RequiredLength = 10;
+                o.Password.RequiredLength = 4;
                 o.User.RequireUniqueEmail = true;
             });
 
