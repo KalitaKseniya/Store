@@ -24,11 +24,19 @@ namespace Store.Infrastructure.Repositories
 
         public void Create(Category category)
         {
-            repository.Add(category);
+            repository.Categories.Add(category);
         }
         public void Save()
         {
             repository.SaveChanges();
+        }
+        public void Delete(Category category)
+        {
+            repository.Categories.Remove(category);
+        }
+        public void Update(Category category)
+        {
+            repository.Categories.Update(category);
         }
     }
 }

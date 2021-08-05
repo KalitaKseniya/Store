@@ -28,5 +28,13 @@ namespace Store.Infrastructure.Repositories
         {
             repository.SaveChanges();
         }
+        public void Delete(Product product)
+        {
+            repository.Products.Remove(product);
+        } 
+        public void Update(Product product)
+        {
+            repository.Products.Update(product);
+        }
     }
 }

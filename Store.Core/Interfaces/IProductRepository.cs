@@ -9,5 +9,7 @@ namespace Store.Core.Interfaces
         Product GetById(int category_id, int id);
         void Create(Product product);
         void Save();
+        void Delete(Product product);
+        void Update(Product product);
     }
 }

@@ -69,5 +69,43 @@ namespace Store.Controllers
 
             return CreatedAtAction(nameof(CreateCategory), category);
         }
+
+        /// <summary>
+        /// Delete the category with id = id
+        /// </summary>
+        [HttpDelete("{id}"), Authorize(Roles = UserRoles.Administrator)]
+        public IActionResult DeleteCategory(int id)
+        {
+            var category = _categoryRepository.GetById(id);
+            if (category == null)
+            {
+                _logger.Warn($"No category with given id = {id}.");
+                return NotFound($"No category with given id = {id}.");
+            }
+            _categoryRepository.Delete(category);
+            _categoryRepository.Save();
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Edit the Name of the category with id = id
+        /// </summary>
+        [HttpPut("{id}"), Authorize(Roles = UserRoles.Administrator)]
+        public IActionResult UpdateCategory(int id, [FromBody]CategoryForUpdateDto categoryForUpdateDto)
+        {
+            var category = _categoryRepository.GetById(id);
+            if (category == null)
+            {
+                _logger.Warn($"No category with given id = {id}.");
+                return NotFound($"No category with given id = {id}.");
+            }
+
+            category.Name = categoryForUpdateDto.Name;
+            _categoryRepository.Update(category);
+            _categoryRepository.Save();
+
+            return NoContent();
+        }
     }
 }

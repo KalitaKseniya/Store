@@ -72,7 +72,7 @@ namespace Store.Controllers
         /// Create a product for the specified category
         /// </summary>
         [HttpPost, Authorize(Roles = UserRoles.Administrator)]
-        public IActionResult CreateProduct(int category_id, [FromBody]ProductForCreationDto productDTO)
+        public IActionResult CreateProduct(int category_id, [FromBody] ProductForCreationDto productDTO)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)
@@ -99,5 +99,59 @@ namespace Store.Controllers
             return Ok("Product created");
         }
 
+        /// <summary>
+        /// Delete the product with id = id for the specified category
+        /// </summary>
+        [HttpDelete("{id}"), Authorize(Roles = UserRoles.Administrator)]
+        public IActionResult DeleteProductForCategory(int category_id, int id)
+        {
+            var category = _categoryRepository.GetById(category_id);
+            if (category == null)
+            {
+                _logger.Error($"There is no category with the given id = {category_id} in db.");
+                return NotFound($"There is no category with the given id = {category_id} in db.");
+            }
+            var product = _productRepository.GetById(category_id, id);
+            if (product == null)
+            {
+                _logger.Error($"There is no product with id = {id} for category with the given category_id = {category_id} in db.");
+                return NotFound($"There is no product with id = {id} for category with the given category_id = {category_id} in db.");
+            }
+
+            _productRepository.Delete(product);
+            _productRepository.Save();
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Update the product with id = id for the specified category
+        /// </summary>
+        [HttpPut("{id}"), Authorize(Roles = UserRoles.Administrator)]
+        public IActionResult UpdateProductForCategory(int category_id, int id, [FromBody]ProductForUpdateDto productForUpdateDto)
+        {
+            var category = _categoryRepository.GetById(category_id);
+            if (category == null)
+            {
+                _logger.Error($"There is no category with the given id = {category_id} in db.");
+                return NotFound($"There is no category with the given id = {category_id} in db.");
+            }
+
+            var product = _productRepository.GetById(category_id, id);
+            if (product == null)
+            {
+                _logger.Error($"There is no product with id = {id} for category with the given category_id = {category_id} in db.");
+                return NotFound($"There is no product with id = {id} for category with the given category_id = {category_id} in db.");
+            }
+
+            product.Name = productForUpdateDto.Name;
+            product.Description = productForUpdateDto.Description;
+            product.Price = productForUpdateDto.Price;
+            _productRepository.Update(product);
+            _productRepository.Save();
+
+            return NoContent();
+        }
+    
     }
 }

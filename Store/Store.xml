@@ -30,6 +30,16 @@
             Create a category
             </summary>
         </member>
+        <member name="M:Store.Controllers.CategoryController.DeleteCategory(System.Int32)">
+            <summary>
+            Delete the category with id = id
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.CategoryController.UpdateCategory(System.Int32,Store.Core.DTO.CategoryForUpdateDto)">
+            <summary>
+            Edit the Name of the category with id = id
+            </summary>
+        </member>
         <member name="M:Store.Controllers.ProductController.GetProductsForCategory(System.Int32)">
             <summary>
             Get the list of all products for the specified category
@@ -43,6 +53,16 @@
         <member name="M:Store.Controllers.ProductController.CreateProduct(System.Int32,Store.Core.DTO.ProductForCreationDto)">
             <summary>
             Create a product for the specified category
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProductController.DeleteProductForCategory(System.Int32,System.Int32)">
+            <summary>
+            Delete the product with id = id for the specified category
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProductController.UpdateProductForCategory(System.Int32,System.Int32,Store.Core.DTO.ProductForUpdateDto)">
+            <summary>
+            Update the product with id = id for the specified category
             </summary>
         </member>
         <member name="M:Store.Controllers.ProductV2Controller.GetCurrency(System.Int32,System.Int32,System.String,System.String)">
