@@ -26,7 +26,7 @@ namespace Store.Application.Services
         }
         
         //может ли сюда прийти null??
-        public async Task<bool> ValidateUser(UserForAuthenticationDTO userForAuth)
+        public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
         {
             _user = await _userManager.FindByNameAsync(userForAuth.Username);
 
@@ -51,7 +51,6 @@ namespace Store.Application.Services
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        //not as in book
         private async Task<List<Claim>> GetClaims()
         {
             var claims = new List<Claim>

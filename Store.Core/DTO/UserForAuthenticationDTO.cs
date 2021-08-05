@@ -2,7 +2,7 @@
 
 namespace Store.Core.DTO
 {
-    public class UserForAuthenticationDTO
+    public class UserForAuthenticationDto
     {
         [Required(ErrorMessage = "Username is required")]
         public string Username { get; set; } 

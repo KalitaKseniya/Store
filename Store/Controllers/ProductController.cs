@@ -72,7 +72,7 @@ namespace Store.Controllers
         /// Create a product for the specified category
         /// </summary>
         [HttpPost, Authorize(Roles = UserRoles.Administrator)]
-        public IActionResult CreateProduct(int category_id, [FromBody]ProductForCreationDTO productDTO)
+        public IActionResult CreateProduct(int category_id, [FromBody]ProductForCreationDto productDTO)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)

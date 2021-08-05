@@ -53,7 +53,7 @@ namespace Store.Controllers
         /// Create a category
         /// </summary>
         [HttpPost, Authorize(Roles = UserRoles.Administrator)]
-        public IActionResult CreateCategory([FromBody]CategoryForCreationDTO categoryForCreationDTO)
+        public IActionResult CreateCategory([FromBody] CategoryForCreationDto categoryForCreationDTO)
         {
             if (categoryForCreationDTO == null)
             {

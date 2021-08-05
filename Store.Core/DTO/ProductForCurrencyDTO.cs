@@ -1,6 +1,6 @@
 ﻿namespace Store.Core.DTO
 {
-    public class ProductForCurrencyDTO
+    public class ProductForCurrencyDto
     {
         public string Name { get; set; }
         public string Description { get; set; }

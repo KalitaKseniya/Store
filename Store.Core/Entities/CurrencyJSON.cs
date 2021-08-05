@@ -2,7 +2,7 @@
 
 namespace Store.Core.Entities
 {
-    public class CurrencyJSON
+    public class CurrencyJson
     {
         [JsonIgnore]
         public decimal USD_in { get; set; } // курс покупки структурным подразделением Доллар США

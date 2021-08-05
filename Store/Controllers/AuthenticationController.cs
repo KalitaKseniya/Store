@@ -32,11 +32,12 @@ namespace Store.Controllers
         /// </summary>
         /// <returns>Token if the user exists</returns>
         [HttpPost("login")]
-        public async Task<IActionResult> AuthenticateUser([FromBody]UserForAuthenticationDTO userForAuth)
+        public async Task<IActionResult> AuthenticateUser([FromBody]UserForAuthenticationDto userForAuth)
         {
             if (userForAuth != null && await _authManager.ValidateUser(userForAuth))
             {
-                return Ok(new { Token = await _authManager.CreateToken() });
+                var token = new { Token = await _authManager.CreateToken() };
+                return Ok(token.Token);
             }
             _logger.Warn($"{nameof(AuthenticateUser)} Authenication failed. Username or password is incorrect");
             
@@ -47,7 +48,7 @@ namespace Store.Controllers
         /// Registration of the user
         /// </summary>
         [HttpPost("register"), Authorize(Roles = UserRoles.Administrator)]
-        public async Task<IActionResult> RegisterUser([FromBody]UserForCreationDTO userForCreationDTO)
+        public async Task<IActionResult> RegisterUser([FromBody]UserForCreationDto userForCreationDTO)
         {
             if(userForCreationDTO == null)
             {

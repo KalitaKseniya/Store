@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
@@ -13,15 +14,14 @@ namespace Store.Application.Services
 {
     public class CurrencyService : ICurrencyService
     {
-        //ToDo вынести в конфиг
-        private string urlTemplate = "https://belarusbank.by/api/kursExchange?city={city}";
+        private readonly string urlTemplate;
 
         private Dictionary<string, decimal> _currDict { get; set; }
-        public CurrencyService()
+        public CurrencyService(IConfiguration configuration)
         {
-            //get url from config
+            urlTemplate = configuration.GetSection("BelarusBankKursExchangeUrl").Value;
         }
-        public async Task<ProductForCurrencyDTO> GetProductForCurrency(Product product, string curr, string city)
+        public async Task<ProductForCurrencyDto> GetProductForCurrency(Product product, string curr, string city)
         {
             string url = urlTemplate.Replace("{city}", city);
             decimal convertedPrice = 1;
@@ -29,7 +29,7 @@ namespace Store.Application.Services
             {
                 await UpdateCurrDict(url);
 
-                if (_currDict.TryGetValue(curr.ToUpper(), out convertedPrice) == false ||
+                if (!_currDict.TryGetValue(curr.ToUpper(), out convertedPrice) ||
                                                                convertedPrice == 0)
                 {
                     return null;
@@ -51,14 +51,14 @@ namespace Store.Application.Services
                     var curr = JsonConvert.DeserializeObject<List<Currency>>(json).FirstOrDefault();
                     _currDict = curr.GetType()
                                     .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                                    .ToDictionary(prop => (string)prop.Name, prop => (decimal)prop.GetValue(curr, null));
+                                    .ToDictionary(prop => prop.Name, prop => (decimal)prop.GetValue(curr, null));
                 }
             }
             response.Close();
         }
-        protected ProductForCurrencyDTO GetConvertedProduct(Product product, string currName, decimal currPrice)
+        protected ProductForCurrencyDto GetConvertedProduct(Product product, string currName, decimal currPrice)
         {
-            return new ProductForCurrencyDTO
+            return new ProductForCurrencyDto
             {
                 Curr = currName,
                 Description = product.Description,

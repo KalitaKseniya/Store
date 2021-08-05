@@ -6,6 +6,6 @@ namespace Store.Core.Interfaces
 {
     public interface ICurrencyService
     {
-        Task<ProductForCurrencyDTO> GetProductForCurrency(Product product, string curr, string city);
+        Task<ProductForCurrencyDto> GetProductForCurrency(Product product, string curr, string city);
     }
 }

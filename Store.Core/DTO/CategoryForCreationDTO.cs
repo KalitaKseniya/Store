@@ -2,7 +2,7 @@
 
 namespace Store.Core.DTO
 {
-    public class CategoryForCreationDTO
+    public class CategoryForCreationDto
     {
         [Required(ErrorMessage = "Name is a required field")]
         public string Name { get; set; }
