@@ -1,5 +1,6 @@
 ﻿using Store.Core.Entities;
 using Store.Core.Interfaces;
+using Store.Core.RequestFeatures;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,9 +13,10 @@ namespace Store.Infrastructure.Repositories
         {
             repository = _repository;
         }
-        public IEnumerable<Category> Get()
+        public PagedList<Category> Get(CategoryParams categoryParams)
         {
-            return repository.Categories.ToList();
+            return PagedList<Category>.ToPagedList(repository.Categories, 
+                categoryParams.PageSize, categoryParams.PageNumber);
         }
 
         public Category GetById(int id)

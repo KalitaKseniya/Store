@@ -1,11 +1,11 @@
 ﻿using Store.Core.Entities;
-using System.Collections.Generic;
+using Store.Core.RequestFeatures;
 
 namespace Store.Core.Interfaces
 {
     public interface IProductRepository
     {
-        IEnumerable<Product> Get(int category_id);
+        PagedList<Product> Get(int category_id, ProductParams productParams);
         Product GetById(int category_id, int id);
         void Create(Product product);
         void Save();

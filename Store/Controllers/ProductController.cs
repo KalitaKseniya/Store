@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
+using Store.Core.RequestFeatures;
 
 namespace Store.Controllers
 {
@@ -27,7 +29,7 @@ namespace Store.Controllers
         /// Get the list of all products for the specified category
         /// </summary>
         [HttpGet]
-        public IActionResult GetProductsForCategory(int category_id)
+        public IActionResult GetProductsForCategory(int category_id, [FromQuery] ProductParams productParams)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)
@@ -35,12 +37,13 @@ namespace Store.Controllers
                 _logger.Error($"There is no category with the given id = {category_id} in db.");
                 return NotFound($"There is no category with the given id = {category_id} in db.");
             }
-            var products = _productRepository.Get(category_id);
+            var products = _productRepository.Get(category_id, productParams);
             if (products == null)
             {
                 _logger.Warn($"Category with category_id = {category_id} contains no products in db.");
                 return NotFound($"Category with category_id = {category_id} contains no products in db.");
             }
+            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(products.MetaData));
             return Ok(products);
         }
 

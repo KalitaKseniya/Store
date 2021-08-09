@@ -1,7 +1,7 @@
 ﻿using Store.Core.Entities;
 using Store.Core.Interfaces;
-using System.Collections.Generic;
 using System.Linq;
+using Store.Core.RequestFeatures;
 
 namespace Store.Infrastructure.Repositories
 {
@@ -12,9 +12,10 @@ namespace Store.Infrastructure.Repositories
         {
             repository = _repository;
         }
-        public IEnumerable<Product> Get(int category_id)
+        public PagedList<Product> Get(int category_id, ProductParams productParams)
         {
-            return repository.Products.Where(p => p.CategoryId == category_id);
+            var items = repository.Products.Where(p => p.CategoryId == category_id);
+            return PagedList<Product>.ToPagedList(items, productParams.PageSize, productParams.PageNumber);
         }
         public Product GetById(int category_id, int id)
         {

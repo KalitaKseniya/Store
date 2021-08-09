@@ -15,7 +15,7 @@
             Registration of the user
             </summary>
         </member>
-        <member name="M:Store.Controllers.CategoryController.GetCategories">
+        <member name="M:Store.Controllers.CategoryController.GetCategories(Store.Core.RequestFeatures.CategoryParams)">
             <summary>
             Get the list of all categories
             </summary>
@@ -40,7 +40,7 @@
             Edit the Name of the category with id = id
             </summary>
         </member>
-        <member name="M:Store.Controllers.ProductController.GetProductsForCategory(System.Int32)">
+        <member name="M:Store.Controllers.ProductController.GetProductsForCategory(System.Int32,Store.Core.RequestFeatures.ProductParams)">
             <summary>
             Get the list of all products for the specified category
             </summary>

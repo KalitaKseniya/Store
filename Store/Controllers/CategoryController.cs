@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
+using Store.Core.RequestFeatures;
 
 namespace Store.Controllers
 {
@@ -23,14 +25,15 @@ namespace Store.Controllers
         /// Get the list of all categories
         /// </summary>
         [HttpGet]
-        public IActionResult GetCategories()
+        public IActionResult GetCategories([FromQuery]CategoryParams categoryParams)
         {
-            var categories = _categoryRepository.Get();
+            var categories = _categoryRepository.Get(categoryParams);
             if (categories == null)
             {
                 _logger.Warn("No categories in db.");
                 return NotFound("No categories in db.");
             }
+            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(categories.MetaData));
             return Ok(categories);
         }
 
