@@ -82,9 +82,9 @@ namespace Store.Extensions
                 .AddRoles<IdentityRole>();
         }
     
-        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuraton)
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSettings = configuraton.GetSection("JwtSettings");
+            var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = Environment.GetEnvironmentVariable("SECRET");
 
             services.AddAuthentication(opt =>
@@ -111,6 +111,15 @@ namespace Store.Extensions
 
         public static void ConfigureAuthentication(this IServiceCollection services) =>
             services.AddScoped<IAuthenticationManager, Store.Application.Services.AuthenticationManager>();
+
+        public static void ConfigureCors(this IServiceCollection services, IConfiguration configuration) =>
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                builder.WithOrigins(configuration.GetSection("ClientUrl").Value)
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+            });
     }
 }
 
