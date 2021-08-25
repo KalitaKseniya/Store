@@ -99,7 +99,7 @@ namespace Store.Controllers
             _productRepository.Create(product);
             _productRepository.Save();
 
-            return Ok("Product created");
+            return Ok(product);
         }
 
         /// <summary>

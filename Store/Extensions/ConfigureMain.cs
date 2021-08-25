@@ -118,7 +118,8 @@ namespace Store.Extensions
                 options.AddPolicy("CorsPolicy", builder =>
                 builder.WithOrigins(configuration.GetSection("ClientUrl").Value)
                 .AllowAnyMethod()
-                .AllowAnyHeader());
+                .AllowAnyHeader()
+                .WithExposedHeaders("pagination"));
             });
     }
 }

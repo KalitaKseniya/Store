@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
@@ -17,14 +18,17 @@ namespace Store.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IAuthenticationManager _authManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        
+        private readonly IConfiguration _configuration;
+
         public AuthenticationController(ILoggerManager logger, UserManager<User> userManager,
-            IAuthenticationManager authManager, RoleManager<IdentityRole> roleManager)
+            IAuthenticationManager authManager, RoleManager<IdentityRole> roleManager, 
+            IConfiguration configuration)
         {
             _logger = logger;
             _userManager = userManager;
             _authManager = authManager;
             _roleManager = roleManager;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -36,8 +40,11 @@ namespace Store.Controllers
         {
             if (userForAuth != null && await _authManager.ValidateUser(userForAuth))
             {
-                var token = new { Token = await _authManager.CreateToken() };
-                return Ok(token.Token);
+                var response = new { 
+                    token = await _authManager.CreateToken(),
+                    minutesExpires = _configuration.GetSection("jwtSettings").GetSection("minutesExpires").Value
+                };
+                return Ok(response);
             }
             _logger.Warn($"{nameof(AuthenticateUser)} Authenication failed. Username or password is incorrect");
             
