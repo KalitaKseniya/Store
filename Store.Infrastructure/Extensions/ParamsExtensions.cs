@@ -17,31 +17,41 @@ namespace Store.Infrastructure.Extensions
                     c.Name.ToLower().Contains(search.Trim().ToLower()));
         }
 
-        public static IQueryable<Category> Sorting(this IQueryable<Category> categories,
+        public static IQueryable<T> Sorting<T>(this IQueryable<T> items,
             string orderBy, string orderDir)
         {
-            if (string.IsNullOrWhiteSpace(orderBy) || !IsValidProperty(orderBy))
-                return categories;
+            if (string.IsNullOrWhiteSpace(orderBy) || !IsValidProperty<T>(orderBy))
+                return items;
             if (string.IsNullOrWhiteSpace(orderDir))
             {
                 orderDir = "ASC";
             }
             orderDir = (orderDir.ToLower() == "desc") ? "DESC" : "ASC";
-            return categories.OrderBy(String.Format($"{orderBy} {orderDir}"));
+            return items.OrderBy(String.Format($"{orderBy} {orderDir}"));
         }
 
-        public static bool IsValidProperty(string propertyName)
+        public static bool IsValidProperty<T>(string propertyName)
         {
-            var prop = typeof(Category).GetProperty(
+            var prop = typeof(T).GetProperty(
                             propertyName,
                             BindingFlags.IgnoreCase |
                             BindingFlags.Public |
                             BindingFlags.Instance);
             if (prop == null)
             {
-                throw new NotSupportedException($"Property {propertyName} doesn't exist in Category");
+                throw new NotSupportedException($"Property {propertyName} doesn't exist in {typeof(T)}");
             }
             return prop != null;
         }
+
+        public static IQueryable<Product> Searching(this IQueryable<Product> products, string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+                return products;
+
+            return products.Where(p => 
+                    p.Name.ToLower().Contains(search.Trim().ToLower()));
+        }
+
     }
 }

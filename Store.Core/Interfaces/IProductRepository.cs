@@ -11,5 +11,6 @@ namespace Store.Core.Interfaces
         void Save();
         void Delete(Product product);
         void Update(Product product);
+        PagedList<Product> GetAllForAllCategories(ProductParams productParams);
     }
 }

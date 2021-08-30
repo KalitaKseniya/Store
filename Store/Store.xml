@@ -42,7 +42,8 @@
         </member>
         <member name="M:Store.Controllers.ProductController.GetProductsForCategory(System.Int32,Store.Core.RequestFeatures.ProductParams)">
             <summary>
-            Get the list of all products for the specified category
+            Get the list of all products for the specified category. 
+            Specify category_id=-1 to have all products for all categories  
             </summary>
         </member>
         <member name="M:Store.Controllers.ProductController.GetProduct(System.Int32,System.Int32)">
