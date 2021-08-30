@@ -1,7 +1,7 @@
 ﻿using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Core.RequestFeatures;
-using System.Collections.Generic;
+using Store.Infrastructure.Extensions;
 using System.Linq;
 
 namespace Store.Infrastructure.Repositories
@@ -15,7 +15,9 @@ namespace Store.Infrastructure.Repositories
         }
         public PagedList<Category> Get(CategoryParams categoryParams)
         {
-            return PagedList<Category>.ToPagedList(repository.Categories, 
+            var categoriesAfterSearch = repository.Categories.ToList()
+                                                        .Searching(categoryParams.Search);
+            return PagedList<Category>.ToPagedList(categoriesAfterSearch, 
                 categoryParams.PageSize, categoryParams.PageNumber);
         }
 
