@@ -11,6 +11,7 @@ namespace Store.Core.RequestFeatures
             set { pageSize = (value > maxPageSize)? maxPageSize : value; } 
         }
         public int PageNumber { get; set; } = 1;
-         
+        public string OrderBy { get; set; } = "Id";
+        public string OrderDir { get; set; } = "ASC";
     }
 }

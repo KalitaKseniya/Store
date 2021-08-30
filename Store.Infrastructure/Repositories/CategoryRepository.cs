@@ -2,7 +2,6 @@
 using Store.Core.Interfaces;
 using Store.Core.RequestFeatures;
 using Store.Infrastructure.Extensions;
-using System.Linq;
 
 namespace Store.Infrastructure.Repositories
 {
@@ -15,8 +14,9 @@ namespace Store.Infrastructure.Repositories
         }
         public PagedList<Category> Get(CategoryParams categoryParams)
         {
-            var categoriesAfterSearch = repository.Categories.ToList()
-                                                        .Searching(categoryParams.Search);
+            var categoriesAfterSearch = repository.Categories
+                                         .Searching(categoryParams.Search)
+                                         .Sorting(categoryParams.OrderBy, categoryParams.OrderDir);
             return PagedList<Category>.ToPagedList(categoriesAfterSearch, 
                 categoryParams.PageSize, categoryParams.PageNumber);
         }
