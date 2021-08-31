@@ -13,10 +13,10 @@ namespace Store.Core.RequestFeatures
         public int TotalCount {get;set;}
 
     }
-    public class PagedList<T>: List<T>
+    public class IQueryable<T>: System.Collections.Generic.List<T>
     {
         public MetaData MetaData { get; set; }
-        public PagedList(List<T> items, int totalCount, int pageNumber, int pageSize)
+        public IQueryable(System.Collections.Generic.List<T> items, int totalCount, int pageNumber, int pageSize)
         {
             MetaData = new MetaData
             {
@@ -29,13 +29,13 @@ namespace Store.Core.RequestFeatures
             AddRange(items);
         }
         
-        public static PagedList<T> ToPagedList(IEnumerable<T> source, int pageSize, int pageNumber)
+        public static IQueryable<T> ToPagedList(IEnumerable<T> source, int pageSize, int pageNumber)
         {
             var totalCount = source.Count();
             var items = source.Skip((pageNumber - 1) * pageSize)
                               .Take(pageSize)
                               .ToList();
-            return new PagedList<T>(items, totalCount, pageNumber, pageSize);
+            return new IQueryable<T>(items, totalCount, pageNumber, pageSize);
         }
     }
 }

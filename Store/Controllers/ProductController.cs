@@ -32,7 +32,7 @@ namespace Store.Controllers
         [HttpGet]
         public IActionResult GetProductsForCategory(int category_id, [FromQuery] ProductParams productParams)
         {
-            PagedList<Product> products = null;
+            IQueryable<Product> products = null;
             if (category_id == -1)
             {
                 products = _productRepository.GetAllForAllCategories(productParams);
