@@ -12,12 +12,12 @@ namespace Store.Infrastructure.Repositories
         {
             repository = _repository;
         }
-        public IQueryable<Category> Get(CategoryParams categoryParams)
+        public PagedList<Category> Get(CategoryParams categoryParams)
         {
             var categoriesAfterSearch = repository.Categories
                                          .Searching(categoryParams.Search)
                                          .Sorting(categoryParams.OrderBy, categoryParams.OrderDir);
-            return IQueryable<Category>.ToPagedList(categoriesAfterSearch, 
+            return PagedList<Category>.ToPagedList(categoriesAfterSearch, 
                 categoryParams.PageSize, categoryParams.PageNumber);
         }
 

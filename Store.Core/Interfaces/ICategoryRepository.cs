@@ -5,7 +5,7 @@ namespace Store.Core.Interfaces
 {
     public interface ICategoryRepository
     {
-        IQueryable<Category> Get(CategoryParams categoryParams);
+        PagedList<Category> Get(CategoryParams categoryParams);
         Category GetById(int id);
         void Create(Category category);
         void Save();

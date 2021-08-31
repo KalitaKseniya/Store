@@ -10,8 +10,5 @@ namespace Store.Core.Entities
         public decimal Price { get; set; }
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
-        public string ImagePath { get; set; }
-        [ForeignKey(nameof(Provider))]
-        public int ProviderId { get; set; }
     }
 }
