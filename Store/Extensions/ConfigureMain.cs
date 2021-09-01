@@ -85,7 +85,7 @@ namespace Store.Extensions
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
-            var secretKey = Environment.GetEnvironmentVariable("SECRET");
+            var secretKey = jwtSettings.GetSection("key").Value;
 
             services.AddAuthentication(opt =>
             {
@@ -116,7 +116,7 @@ namespace Store.Extensions
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder =>
-                builder.WithOrigins(configuration.GetSection("ClientUrl").Value)
+                builder.AllowAnyOrigin()//.WithOrigins(configuration.GetSection("ClientUrl").Value)
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .WithExposedHeaders("pagination"));

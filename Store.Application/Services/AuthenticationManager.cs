@@ -44,9 +44,8 @@ namespace Store.Application.Services
 
         private SigningCredentials GetSigningCredentials()
         {
-            var envVar = Environment.GetEnvironmentVariable("SECRET");
-            var key = Encoding.UTF8.GetBytes(envVar + envVar);
-            var secret = new SymmetricSecurityKey(key);
+            var key = _configuration.GetSection("JwtSettings").GetSection("key").Value;
+            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key+key));
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }

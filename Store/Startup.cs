@@ -89,7 +89,7 @@ namespace Store
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger,
             IApiVersionDescriptionProvider provider)
         {
-            if (env.IsDevelopment())
+            //if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
