@@ -102,7 +102,8 @@ namespace Store.Controllers
                 Name = productDTO.Name,
                 Description = productDTO.Description,
                 Price = productDTO.Price,
-                CategoryId = category_id
+                CategoryId = category_id,
+                ImagePath = productDTO.ImagePath
             };
 
             _productRepository.Create(product);
@@ -159,6 +160,8 @@ namespace Store.Controllers
             product.Name = productForUpdateDto.Name;
             product.Description = productForUpdateDto.Description;
             product.Price = productForUpdateDto.Price;
+            product.ImagePath = productForUpdateDto.ImagePath;
+
             _productRepository.Update(product);
             _productRepository.Save();
 
