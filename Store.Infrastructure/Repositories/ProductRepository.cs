@@ -44,8 +44,11 @@ namespace Store.Infrastructure.Repositories
         {       
             var items = repository.Products
                                         .Searching(productParams.Search)
+                                        .FilteringByPrice(productParams.MinPrice, productParams.MaxPrice)
+                                        .FilteringByCategories(productParams.CategoryIds)
                                         .Sorting(productParams.OrderBy, productParams.OrderDir);
             return PagedList<Product>.ToPagedList(items, productParams.PageSize, productParams.PageNumber);
         }
+
     }
 }

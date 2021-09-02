@@ -13,6 +13,7 @@ namespace Store.Infrastructure
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Product>().Property(obj => obj.Price).HasPrecision(15, 2);
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());

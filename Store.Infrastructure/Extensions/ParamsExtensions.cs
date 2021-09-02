@@ -1,5 +1,6 @@
 ﻿using Store.Core.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
@@ -53,5 +54,20 @@ namespace Store.Infrastructure.Extensions
                     p.Name.ToLower().Contains(search.Trim().ToLower()));
         }
 
+        public static IQueryable<Product> FilteringByPrice(this IQueryable<Product> products,
+                                                           decimal minPrice,
+                                                           decimal maxPrice)
+            => products.Where(p => minPrice <= p.Price && p.Price <= maxPrice);
+
+        public static IQueryable<Product> FilteringByCategories(this IQueryable<Product> products,
+                                                                ICollection<int> categoryIds)
+        {
+            if (categoryIds == null)
+            {
+                return products;
+            }
+            return products.Where(p => categoryIds.Contains(p.CategoryId)); 
+        }
+        
     }
 }

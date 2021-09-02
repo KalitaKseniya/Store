@@ -32,6 +32,11 @@ namespace Store.Controllers
         [HttpGet]
         public IActionResult GetProductsForCategory(int category_id, [FromQuery] ProductParams productParams)
         {
+            if (!productParams.PriceRangeValid())
+            {
+                _logger.Error($"Invalid price range minPrice={productParams.MinPrice} > maxPrice={productParams.MaxPrice}");
+                return BadRequest($"Invalid price range minPrice ={ productParams.MinPrice} > maxPrice ={ productParams.MaxPrice}");
+            }
             PagedList<Product> products = null;
             if (category_id == -1)
             {
