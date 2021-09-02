@@ -11,7 +11,7 @@ namespace Store.Infrastructure.Configuration
             builder.HasData(
             new Category
             {
-                Id = 1, 
+                Id = 1,
                 Name = "Dresses"
             },
             new Category

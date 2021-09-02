@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Store.Application.Services;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
-using System.Net;
-using Microsoft.AspNetCore.Identity;
 using Store.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using System;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using System.Text;
 
 namespace Store.Extensions
@@ -63,7 +62,7 @@ namespace Store.Extensions
 
         public static void ConfigureCurrencies(this IServiceCollection services)
             => services.AddScoped<ICurrencyService, CurrencyService>();
-    
+
         public static void ConfigureIdentity(this IServiceCollection services)
         {
             var builder = services.AddIdentityCore<User>(o =>
@@ -81,7 +80,7 @@ namespace Store.Extensions
                 .AddDefaultTokenProviders()
                 .AddRoles<IdentityRole>();
         }
-    
+
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
@@ -103,10 +102,10 @@ namespace Store.Extensions
 
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey+secretKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey + secretKey))
                 };
             });
-        
+
         }
 
         public static void ConfigureAuthentication(this IServiceCollection services) =>

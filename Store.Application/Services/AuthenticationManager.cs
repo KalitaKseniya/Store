@@ -17,14 +17,14 @@ namespace Store.Application.Services
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
-        private User _user; 
-        
+        private User _user;
+
         public AuthenticationManager(UserManager<User> userManager, IConfiguration configuration)
         {
             _configuration = configuration;
             _userManager = userManager;
         }
-        
+
         //может ли сюда прийти null??
         public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
         {
@@ -32,7 +32,7 @@ namespace Store.Application.Services
 
             return _user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password);
         }
-        
+
         public async Task<string> CreateToken()
         {
             var SigningCredentials = GetSigningCredentials();
@@ -45,7 +45,7 @@ namespace Store.Application.Services
         private SigningCredentials GetSigningCredentials()
         {
             var key = _configuration.GetSection("JwtSettings").GetSection("key").Value;
-            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key+key));
+            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key + key));
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }

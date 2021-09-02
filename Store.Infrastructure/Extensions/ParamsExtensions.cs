@@ -1,8 +1,8 @@
 ﻿using Store.Core.Entities;
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Linq.Dynamic.Core;
+using System.Reflection;
 
 namespace Store.Infrastructure.Extensions
 {
@@ -13,7 +13,7 @@ namespace Store.Infrastructure.Extensions
             if (string.IsNullOrWhiteSpace(search))
                 return categories;
 
-            return categories.Where(c => 
+            return categories.Where(c =>
                     c.Name.ToLower().Contains(search.Trim().ToLower()));
         }
 
@@ -49,7 +49,7 @@ namespace Store.Infrastructure.Extensions
             if (string.IsNullOrWhiteSpace(search))
                 return products;
 
-            return products.Where(p => 
+            return products.Where(p =>
                     p.Name.ToLower().Contains(search.Trim().ToLower()));
         }
 

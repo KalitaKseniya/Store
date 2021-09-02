@@ -25,7 +25,7 @@ namespace Store.Controllers
         /// Get the list of all categories
         /// </summary>
         [HttpGet]
-        public IActionResult GetCategories([FromQuery]CategoryParams categoryParams)
+        public IActionResult GetCategories([FromQuery] CategoryParams categoryParams)
         {
             var categories = _categoryRepository.Get(categoryParams);
             if (categories == null)
@@ -95,7 +95,7 @@ namespace Store.Controllers
         /// Edit the Name of the category with id = id
         /// </summary>
         [HttpPut("{id}"), Authorize(Roles = UserRoles.Administrator)]
-        public IActionResult UpdateCategory(int id, [FromBody]CategoryForUpdateDto categoryForUpdateDto)
+        public IActionResult UpdateCategory(int id, [FromBody] CategoryForUpdateDto categoryForUpdateDto)
         {
             var category = _categoryRepository.GetById(id);
             if (category == null)

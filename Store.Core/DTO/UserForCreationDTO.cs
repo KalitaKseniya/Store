@@ -15,7 +15,7 @@ namespace Store.Core.DTO
         public string UserName { get; set; }
         [Required(ErrorMessage = "Password is a required field.")]
         public string Password { get; set; }
-        [Required(ErrorMessage ="You must specify at least one role.")]
+        [Required(ErrorMessage = "You must specify at least one role.")]
         public ICollection<string> Roles { get; set; }
     }
 }

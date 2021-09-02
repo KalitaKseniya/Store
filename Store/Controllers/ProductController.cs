@@ -141,7 +141,7 @@ namespace Store.Controllers
         /// Update the product with id = id for the specified category
         /// </summary>
         [HttpPut("{id}"), Authorize(Roles = UserRoles.Administrator)]
-        public IActionResult UpdateProductForCategory(int category_id, int id, [FromBody]ProductForUpdateDto productForUpdateDto)
+        public IActionResult UpdateProductForCategory(int category_id, int id, [FromBody] ProductForUpdateDto productForUpdateDto)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)
@@ -167,6 +167,6 @@ namespace Store.Controllers
 
             return NoContent();
         }
-    
+
     }
 }
