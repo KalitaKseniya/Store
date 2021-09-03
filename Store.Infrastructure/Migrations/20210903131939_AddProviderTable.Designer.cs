@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.Infrastructure;
 
 namespace Store.Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20210903131939_AddProviderTable")]
+    partial class AddProviderTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,14 +51,14 @@ namespace Store.Infrastructure.Migrations
                         new
                         {
                             Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
-                            ConcurrencyStamp = "fe6dc0c8-5a29-4199-8c1f-845be7f2224c",
+                            ConcurrencyStamp = "99310b91-5d47-4ec7-ab1f-2198f4c47d47",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
-                            ConcurrencyStamp = "e27afce4-e53b-42ea-964c-a9d4fb4d09f2",
+                            ConcurrencyStamp = "1ef60650-ec4d-498e-9137-a760693bda42",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -302,9 +304,6 @@ namespace Store.Infrastructure.Migrations
                     b.Property<string>("ImgPath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Info")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -395,7 +394,7 @@ namespace Store.Infrastructure.Migrations
                         {
                             Id = "B22698B8-42A2-4115-9631-1C2D1E2AC5F7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8c8429f7-dafd-41fd-8840-86faccce70c1",
+                            ConcurrencyStamp = "768a627b-5fa7-49d1-8f00-93fba2b81a9c",
                             Email = "Admin@Admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -403,7 +402,7 @@ namespace Store.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAECgCAvVmXlP7cb1vhy23IeOVyJ3AVg3sik6QuzZ60J6t3G45tiVE9jFrAFbP/6gnqw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEE3fc56WK90DrAwxZ3EXV/KKl6LG3pQUwKQsPRqEWvLuqiXshqNzL7SnbNLqH+KTLg==",
                             PhoneNumber = "XXXXXXXXXXXXX",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",

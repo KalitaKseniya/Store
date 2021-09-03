@@ -11,5 +11,7 @@ namespace Store.Core.Entities
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
         public string ImagePath { get; set; }
+        [ForeignKey(nameof(Provider))]
+        public int ProviderId { get; set; }
     }
 }

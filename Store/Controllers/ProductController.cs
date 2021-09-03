@@ -26,7 +26,7 @@ namespace Store.Controllers
         }
 
         /// <summary>
-        /// Get the list of all products for the specified category. 
+        /// Get the list of all products for the specified category 
         /// </summary>
         [HttpGet]
         public IActionResult GetProductsForCategory(int category_id, [FromQuery] ProductParams productParams)

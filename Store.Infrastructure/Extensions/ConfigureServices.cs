@@ -15,6 +15,7 @@ namespace Store.Infrastructure.Extensions
                     ));
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProviderRepository, ProviderRepository>();
             return services;
         }
     }

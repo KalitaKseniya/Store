@@ -42,12 +42,12 @@
         </member>
         <member name="M:Store.Controllers.EntityController.GetProductsForCategory(Store.Core.RequestFeatures.ProductParams,System.Collections.Generic.IEnumerable{System.Int32})">
             <summary>
-            Get the list of all products for all categories. 
+            Get the list of all products for all categories 
             </summary>
         </member>
         <member name="M:Store.Controllers.ProductController.GetProductsForCategory(System.Int32,Store.Core.RequestFeatures.ProductParams)">
             <summary>
-            Get the list of all products for the specified category. 
+            Get the list of all products for the specified category 
             </summary>
         </member>
         <member name="M:Store.Controllers.ProductController.GetProduct(System.Int32,System.Int32)">
@@ -75,6 +75,31 @@
             Get the product by id for the specified category.
             You could choose city (write in Russian) and currency.
              Allowed curr: USD, EUR, RUB, GBP, CAD, PLN, UAH, SEK, CHF, JPY, CNY, CZK, NOK.
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProviderController.GetProviders">
+            <summary>
+            Get the list of all providers 
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProviderController.GetProvider(System.Int32)">
+            <summary>
+            Get the provider by id
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProviderController.CreateProvider(Store.Core.DTO.ProviderForManipulationDto)">
+            <summary>
+            Create a provide
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProviderController.UpdateProvider(System.Int32,Store.Core.DTO.ProviderForManipulationDto)">
+            <summary>
+            Update the provider with the specified id 
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ProviderController.DeleteProvider(System.Int32)">
+            <summary>
+            Delete the provider with the specified id 
             </summary>
         </member>
         <member name="T:Store.Swagger.ConfigureSwaggerOptions">

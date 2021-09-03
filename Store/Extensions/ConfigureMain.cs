@@ -120,6 +120,7 @@ namespace Store.Extensions
                 .AllowAnyHeader()
                 .WithExposedHeaders("pagination"));
             });
+           
     }
 }
 

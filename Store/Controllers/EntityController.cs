@@ -28,11 +28,11 @@ namespace Store.Controllers
         }
 
         /// <summary>
-        /// Get the list of all products for all categories. 
+        /// Get the list of all products 
         /// </summary>
         [HttpGet]
         [Route("products")]
-        public IActionResult GetProductsForCategory([FromQuery] ProductParams productParams,
+        public IActionResult GetProducts([FromQuery] ProductParams productParams,
                                                     [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> CategoryIds)
         {
             if (!productParams.PriceRangeValid())
