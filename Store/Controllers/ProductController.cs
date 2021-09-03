@@ -27,7 +27,6 @@ namespace Store.Controllers
 
         /// <summary>
         /// Get the list of all products for the specified category. 
-        /// Specify category_id=-1 to have all products for all categories  
         /// </summary>
         [HttpGet]
         public IActionResult GetProductsForCategory(int category_id, [FromQuery] ProductParams productParams)
@@ -37,21 +36,15 @@ namespace Store.Controllers
                 _logger.Error($"Invalid price range minPrice={productParams.MinPrice} > maxPrice={productParams.MaxPrice}");
                 return BadRequest($"Invalid price range minPrice ={ productParams.MinPrice} > maxPrice ={ productParams.MaxPrice}");
             }
-            PagedList<Product> products = null;
-            if (category_id == -1)
+            
+            var category = _categoryRepository.GetById(category_id);
+            if (category == null)
             {
-                products = _productRepository.GetAllForAllCategories(productParams);
+                _logger.Error($"There is no category with the given id = {category_id} in db.");
+                return NotFound($"There is no category with the given id = {category_id} in db.");
             }
-            else
-            {
-                var category = _categoryRepository.GetById(category_id);
-                if (category == null)
-                {
-                    _logger.Error($"There is no category with the given id = {category_id} in db.");
-                    return NotFound($"There is no category with the given id = {category_id} in db.");
-                }
-                products = _productRepository.Get(category_id, productParams);
-            }
+            PagedList<Product> products = _productRepository.Get(category_id, productParams);
+            
             if (products == null)
             {
                 _logger.Warn($"Category with category_id = {category_id} contains no products in db.");

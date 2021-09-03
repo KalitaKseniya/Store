@@ -60,7 +60,7 @@ namespace Store.Infrastructure.Extensions
             => products.Where(p => minPrice <= p.Price && p.Price <= maxPrice);
 
         public static IQueryable<Product> FilteringByCategories(this IQueryable<Product> products,
-                                                                ICollection<int> categoryIds)
+                                                                IEnumerable<int> categoryIds)
         {
             if (categoryIds == null)
             {

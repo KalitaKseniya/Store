@@ -3,6 +3,7 @@ using Store.Core.Interfaces;
 using System.Linq;
 using Store.Core.RequestFeatures;
 using Store.Infrastructure.Extensions;
+using System.Collections.Generic;
 
 namespace Store.Infrastructure.Repositories
 {
@@ -17,6 +18,7 @@ namespace Store.Infrastructure.Repositories
         {
             var items = repository.Products.Where(p => p.CategoryId == category_id)
                                         .Searching(productParams.Search)
+                                        .FilteringByPrice(productParams.MinPrice, productParams.MaxPrice)
                                         .Sorting(productParams.OrderBy, productParams.OrderDir); 
             return PagedList<Product>.ToPagedList(items, productParams.PageSize, productParams.PageNumber);
         }
@@ -40,12 +42,12 @@ namespace Store.Infrastructure.Repositories
         {
             repository.Products.Update(product);
         }
-        public PagedList<Product> GetAllForAllCategories(ProductParams productParams)
+        public PagedList<Product> GetAllForAllCategories(ProductParams productParams, IEnumerable<int> categoryIds)
         {       
             var items = repository.Products
                                         .Searching(productParams.Search)
                                         .FilteringByPrice(productParams.MinPrice, productParams.MaxPrice)
-                                        .FilteringByCategories(productParams.CategoryIds)
+                                        .FilteringByCategories(categoryIds)
                                         .Sorting(productParams.OrderBy, productParams.OrderDir);
             return PagedList<Product>.ToPagedList(items, productParams.PageSize, productParams.PageNumber);
         }

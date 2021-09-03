@@ -1,5 +1,6 @@
 ﻿using Store.Core.Entities;
 using Store.Core.RequestFeatures;
+using System.Collections.Generic;
 
 namespace Store.Core.Interfaces
 {
@@ -11,6 +12,6 @@ namespace Store.Core.Interfaces
         void Save();
         void Delete(Product product);
         void Update(Product product);
-        PagedList<Product> GetAllForAllCategories(ProductParams productParams);
+        PagedList<Product> GetAllForAllCategories(ProductParams productParams, IEnumerable<int> categoryIds);
     }
 }
