@@ -17,12 +17,14 @@ namespace Store.Controllers
         private readonly ILoggerManager _logger;
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IProviderRepository _providerRepository;
         public ProductController(ILoggerManager logger, IProductRepository productRepository,
-            ICategoryRepository categoryRepository)
+            ICategoryRepository categoryRepository, IProviderRepository providerRepository)
         {
             _logger = logger;
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
+            _providerRepository = providerRepository;
         }
 
         /// <summary>
@@ -95,13 +97,21 @@ namespace Store.Controllers
                 _logger.Error("Can't create product = null.");
                 return BadRequest("Product can't be null");
             }
+            var providerId = productDTO.ProviderId;
+            var provider = _providerRepository.GetById(providerId);
+            if (provider == null)
+            {
+                _logger.Error($"No provider with the given id = {providerId}");
+                return NotFound($"No provider with the given id = {providerId}");
+            }
             Product product = new Product
             {
                 Name = productDTO.Name,
                 Description = productDTO.Description,
                 Price = productDTO.Price,
                 CategoryId = category_id,
-                ImagePath = productDTO.ImagePath
+                ImagePath = productDTO.ImagePath,
+                ProviderId = productDTO.ProviderId
             };
 
             _productRepository.Create(product);

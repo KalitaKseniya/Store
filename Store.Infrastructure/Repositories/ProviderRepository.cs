@@ -1,5 +1,7 @@
 ﻿using Store.Core.Entities;
 using Store.Core.Interfaces;
+using Store.Core.RequestFeatures;
+using Store.Infrastructure.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,11 +24,13 @@ namespace Store.Infrastructure.Repositories
             _repository.Providers.Remove(provider);
         }
 
-        public IQueryable<Provider> Get()
+        public PagedList<Provider> Get(ProviderParams providerParams)
         {
-            var items = _repository.Providers.AsQueryable();
+            var items = _repository.Providers
+                                   .Searching(providerParams.Search)
+                                   .Sorting(providerParams.OrderBy, providerParams.OrderDir);
 
-            return items;
+            return PagedList<Provider>.ToPagedList(items, providerParams.PageSize, providerParams.PageNumber);
         }
 
         public Provider GetById(int id)

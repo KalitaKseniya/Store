@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
+using Store.Core.RequestFeatures;
 
 namespace Store.Controllers
 {
@@ -25,14 +27,15 @@ namespace Store.Controllers
         /// Get the list of all providers 
         /// </summary>
         [HttpGet]
-        public IActionResult GetProviders()
+        public IActionResult GetProviders([FromQuery]ProviderParams providerParams)
         {
-            var providers = _providerRepository.Get();
+            var providers = _providerRepository.Get(providerParams);
             if (providers == null)
             {
                 _logger.Info("There are no providers in db");
                 return NotFound();
             }
+            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(providers.MetaData));
             return Ok(providers);
         }
 
@@ -53,9 +56,9 @@ namespace Store.Controllers
         }
 
         /// <summary>
-        /// Create a provide
+        /// Create a provider
         /// </summary>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = UserRoles.Administrator)]
         public IActionResult CreateProvider(ProviderForManipulationDto providerDto)
         {
             if (providerDto == null)
@@ -81,7 +84,8 @@ namespace Store.Controllers
         /// <summary>
         /// Update the provider with the specified id 
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = UserRoles.Administrator)]
+
         public IActionResult UpdateProvider(int id, ProviderForManipulationDto providerDto)
         {
             if (providerDto == null)
@@ -110,7 +114,7 @@ namespace Store.Controllers
         /// <summary>
         /// Delete the provider with the specified id 
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = UserRoles.Administrator)]
         public IActionResult DeleteProvider(int id)
         {
             var provider = _providerRepository.GetById(id);

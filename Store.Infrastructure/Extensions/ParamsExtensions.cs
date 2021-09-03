@@ -68,6 +68,15 @@ namespace Store.Infrastructure.Extensions
             }
             return products.Where(p => categoryIds.Contains(p.CategoryId)); 
         }
-        
+
+        public static IQueryable<Provider> Searching(this IQueryable<Provider> providers, string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+                return providers;
+
+            return providers.Where(p =>
+                    p.Name.ToLower().Contains(search.Trim().ToLower()));
+        }
+
     }
 }
