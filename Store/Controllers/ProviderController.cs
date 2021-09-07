@@ -69,7 +69,7 @@ namespace Store.Controllers
 
             var provider = new Provider()
             {
-                ImgPath = providerDto.ImgPath,
+                ImagePath = providerDto.ImagePath,
                 Latitude = providerDto.Latitude,
                 Longitude = providerDto.Longitude,
                 Name = providerDto.Name,
@@ -100,7 +100,7 @@ namespace Store.Controllers
                 return NotFound($"There is no provider with id = {id}.");
             }
 
-            provider.ImgPath = providerDto.ImgPath;
+            provider.ImagePath = providerDto.ImagePath;
             provider.Latitude = providerDto.Latitude;
             provider.Longitude = providerDto.Longitude;
             provider.Name = providerDto.Name;

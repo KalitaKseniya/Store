@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Store.Infrastructure;
 
 namespace Store.Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20210907104101_updateLatAndLongtProvider")]
+    partial class updateLatAndLongtProvider
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,14 +51,14 @@ namespace Store.Infrastructure.Migrations
                         new
                         {
                             Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
-                            ConcurrencyStamp = "5b957453-13ac-4e94-bc1f-d52a8b083edf",
+                            ConcurrencyStamp = "e94cd78e-1dd6-4181-8661-183f611544ca",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
-                            ConcurrencyStamp = "37b5be16-7406-4a66-98e0-72d0c10addc0",
+                            ConcurrencyStamp = "9e901fec-2677-4149-8814-671fabe8e79d",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -299,7 +301,7 @@ namespace Store.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ImagePath")
+                    b.Property<string>("ImgPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Info")
@@ -395,7 +397,7 @@ namespace Store.Infrastructure.Migrations
                         {
                             Id = "B22698B8-42A2-4115-9631-1C2D1E2AC5F7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d4265664-f25b-420a-9aad-9097232ebd2c",
+                            ConcurrencyStamp = "dca5497b-fd64-47f1-828c-236a6bdf8c04",
                             Email = "Admin@Admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -403,7 +405,7 @@ namespace Store.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEH2SL+Xspj+c1H6sYmv+M1tioFfEu915nMnV+ngSMwshqzNs4LhlWCvbgJYe0dHAXA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECZtzFPDnV/16Z3kBLeAmkApDCxk2KuhW0DE22vVbHhiUCsAMYBitgn/SMCC3Oyg1w==",
                             PhoneNumber = "XXXXXXXXXXXXX",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",
