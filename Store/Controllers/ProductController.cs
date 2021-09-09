@@ -157,6 +157,12 @@ namespace Store.Controllers
                 _logger.Error($"There is no category with the given id = {category_id} in db.");
                 return NotFound($"There is no category with the given id = {category_id} in db.");
             }
+            var provider = _providerRepository.GetById(productForUpdateDto.ProviderId);
+            if(provider == null)
+            {
+                _logger.Error($"There is no provider with the given id = {productForUpdateDto.ProviderId} in db.");
+                return NotFound($"There is no category with the given id = {productForUpdateDto.ProviderId} in db.");
+            }
 
             var product = _productRepository.GetById(category_id, id);
             if (product == null)
@@ -169,6 +175,7 @@ namespace Store.Controllers
             product.Description = productForUpdateDto.Description;
             product.Price = productForUpdateDto.Price;
             product.ImagePath = productForUpdateDto.ImagePath;
+            product.ProviderId = productForUpdateDto.ProviderId;
 
             _productRepository.Update(product);
             _productRepository.Save();
