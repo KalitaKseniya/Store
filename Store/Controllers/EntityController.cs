@@ -9,7 +9,6 @@ using Store.ModelBinders;
 
 namespace Store.Controllers
 {
-    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}")]
