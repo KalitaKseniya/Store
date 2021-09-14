@@ -8,6 +8,7 @@ namespace Store.Core.Interfaces
     {
         PagedList<Product> Get(int category_id, ProductParams productParams);
         Product GetById(int category_id, int id);
+        Product GetById(int id);
         void Create(Product product);
         void Save();
         void Delete(Product product);

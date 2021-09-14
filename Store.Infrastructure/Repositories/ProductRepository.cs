@@ -51,6 +51,10 @@ namespace Store.Infrastructure.Repositories
                                         .Sorting(productParams.OrderBy, productParams.OrderDir);
             return PagedList<Product>.ToPagedList(items, productParams.PageSize, productParams.PageNumber);
         }
+        public Product GetById(int id)
+        {
+            return repository.Products.FirstOrDefault(p => p.Id == id);
+        }
 
     }
 }
