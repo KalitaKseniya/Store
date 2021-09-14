@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Store.Core.Entities
 {
@@ -13,5 +14,7 @@ namespace Store.Core.Entities
         public string ImagePath { get; set; }
         [ForeignKey(nameof(Provider))]
         public int ProviderId { get; set; }
+        public List<ShoppingCart> ShoppingCarts { get; set; }
+        public List<ShoppingCartItem> Items { get; set; }
     }
 }

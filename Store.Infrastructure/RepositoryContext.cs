@@ -10,6 +10,7 @@ namespace Store.Infrastructure
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Provider> Providers { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public RepositoryContext(DbContextOptions<RepositoryContext> opt) : base(opt)
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,6 +24,27 @@ namespace Store.Infrastructure
             
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.Entity<ShoppingCart>()
+                .HasMany(sc => sc.Products)
+                .WithMany(p => p.ShoppingCarts)
+                .UsingEntity<ShoppingCartItem>(
+                    j => j.HasOne(sci => sci.Product)
+                           .WithMany(p => p.Items)
+                           .HasForeignKey(sci => sci.ProductId),
+                    j =>
+                    {
+                        return j.HasOne(sci => sci.ShoppingCart)
+                         .WithMany(p => p.ShoppingCartItems)
+                         .HasForeignKey(sci => sci.ShoppingCartId);
+                    },
+                    j => {
+                        j.HasKey(k => new { k.ShoppingCartId, k.ProductId });
+                        j.ToTable("ShoppingCartItems");
+                     }
+                );
+            modelBuilder.Entity<ShoppingCart>()
+                        .Property(sc => sc.DateCreated)
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
         }
     }
 }
