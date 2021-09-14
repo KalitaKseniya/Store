@@ -10,7 +10,6 @@ namespace Store.Infrastructure
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Provider> Providers { get; set; }
-        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public RepositoryContext(DbContextOptions<RepositoryContext> opt) : base(opt)
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,27 +23,25 @@ namespace Store.Infrastructure
             
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
-            modelBuilder.Entity<ShoppingCart>()
-                .HasMany(sc => sc.Products)
-                .WithMany(p => p.ShoppingCarts)
+            modelBuilder
+                .Entity<Product>()
+                .HasMany(p => p.Users)
+                .WithMany(u => u.Products)
                 .UsingEntity<ShoppingCartItem>(
-                    j => j.HasOne(sci => sci.Product)
-                           .WithMany(p => p.Items)
-                           .HasForeignKey(sci => sci.ProductId),
-                    j =>
-                    {
-                        return j.HasOne(sci => sci.ShoppingCart)
+                    j => j
+                         .HasOne(sci => sci.User)
+                         .WithMany(u => u.ShoppingCartItems)
+                         .HasForeignKey(sci => sci.UserId),
+                      j => j
+                         .HasOne(sci => sci.Product)
                          .WithMany(p => p.ShoppingCartItems)
-                         .HasForeignKey(sci => sci.ShoppingCartId);
-                    },
+                         .HasForeignKey(sci => sci.ProductId),
                     j => {
-                        j.HasKey(k => new { k.ShoppingCartId, k.ProductId });
+                        j.HasKey(k => new { k.UserId, k.ProductId });
                         j.ToTable("ShoppingCartItems");
+                        j.Property(sci => sci.Quantity).HasDefaultValue(1);
                      }
                 );
-            modelBuilder.Entity<ShoppingCart>()
-                        .Property(sc => sc.DateCreated)
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
         }
     }
 }

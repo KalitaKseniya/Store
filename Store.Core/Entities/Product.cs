@@ -14,7 +14,7 @@ namespace Store.Core.Entities
         public string ImagePath { get; set; }
         [ForeignKey(nameof(Provider))]
         public int ProviderId { get; set; }
-        public List<ShoppingCart> ShoppingCarts { get; set; }
-        public List<ShoppingCartItem> Items { get; set; }
+        public List<User> Users { get; set; }
+        public List<ShoppingCartItem> ShoppingCartItems { get; set; }
     }
 }
