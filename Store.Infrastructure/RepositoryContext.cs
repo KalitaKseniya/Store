@@ -10,6 +10,7 @@ namespace Store.Infrastructure
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Provider> Providers { get; set; }
+        public DbSet<ShoppingCartItem> Items { get; set; }
         public RepositoryContext(DbContextOptions<RepositoryContext> opt) : base(opt)
         { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,7 +38,7 @@ namespace Store.Infrastructure
                          .WithMany(p => p.ShoppingCartItems)
                          .HasForeignKey(sci => sci.ProductId),
                     j => {
-                        j.HasKey(k => new { k.UserId, k.ProductId });
+                        j.HasKey(k => k.Id );
                         j.ToTable("ShoppingCartItems");
                         j.Property(sci => sci.Quantity).HasDefaultValue(1);
                      }
