@@ -42,6 +42,11 @@ namespace Store.Application.Services
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
+        public async Task<IList<string>> GetRoles()
+        {
+            return await _userManager.GetRolesAsync(_user);
+        }
+
         private SigningCredentials GetSigningCredentials()
         {
             var key = _configuration.GetSection("JwtSettings").GetSection("key").Value;

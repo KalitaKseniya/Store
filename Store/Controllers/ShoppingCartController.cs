@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.Controllers
 {
-    [Authorize(Roles = "Client")]
+    [Authorize(Roles = UserRoles.Client)]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/shopping_carts")]
@@ -29,6 +30,23 @@ namespace Store.Controllers
             _productRepository = productRepository;
             _userManager = userManager;
             _logger = logger;
+        }
+
+        [HttpGet("hello")]
+        public async Task<IActionResult> GetItem(int productId)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var item = _cartRepository.GetByProductIdForUser(productId, user.Id);
+            var itemToReturn = new ShoppingCartItemDto()
+            {
+                Id = item.Id,
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                ProductName = item.Product.Name,
+                ProductPrice = item.Product.Price
+            };
+                
+            return Ok(itemToReturn);
         }
 
         /// <summary>
@@ -70,7 +88,7 @@ namespace Store.Controllers
             }
             else
             {
-                _cartRepository.UpdateQuantity(item, quantity);
+                _cartRepository.UpdateQuantity(item, quantity + item.Quantity);
             }
            
             _cartRepository.Save();
@@ -78,8 +96,9 @@ namespace Store.Controllers
             {
                 Id = item.Id,
                 ProductId = item.ProductId,
-                UserId = item.UserId,
-                Quantity = item.Quantity
+                Quantity = item.Quantity,
+                ProductName = product.Name,
+                ProductPrice = product.Price
             };
             return Ok(itemToReturn);
         }
@@ -97,12 +116,13 @@ namespace Store.Controllers
             }
 
             var items = _cartRepository.GetItems(user.Id);
-            var itemsToReturn = items.Select(x => new
+            var itemsToReturn = items.Select(item => new
             {
-                Id = x.Id,
-                ProductId = x.ProductId,
-                UserId = x.UserId,
-                Quantity = x.Quantity
+                Id = item.Id,
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                ProductName = item.Product.Name,
+                ProductPrice = item.Product.Price
             });
             return Ok(itemsToReturn);
 

@@ -102,6 +102,33 @@
             Delete the provider with the specified id 
             </summary>
         </member>
+        <member name="M:Store.Controllers.ShoppingCartController.AddItem(System.Int32,System.Int32)">
+            <summary>
+            For the authorized user 
+            add a product to shopping cart (if wasn't in user's shopping cart)   
+            or update its quantity (if exists in user's shopping cart)  
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ShoppingCartController.GetItems">
+            <summary>
+            Get all shopping cart items of the authorized user 
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ShoppingCartController.ClearCart">
+            <summary>
+            Delete all shopping cart items for the authorized user 
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ShoppingCartController.DeleteItem(System.Int32)">
+            <summary>
+            Delete shopping cart item by id for the authorized user 
+            </summary>
+        </member>
+        <member name="M:Store.Controllers.ShoppingCartController.UpdateQuantity(System.Int32,System.Int32)">
+            <summary>
+            Update the quantity of ShoppingCartItem with id = id for the authorized user 
+            </summary>
+        </member>
         <member name="T:Store.Swagger.ConfigureSwaggerOptions">
             <summary>
             Configures the Swagger generation options.

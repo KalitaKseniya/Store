@@ -1,4 +1,5 @@
-﻿using Store.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Store.Core.Entities;
 using Store.Core.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,9 @@ namespace Store.Infrastructure.Repositories
         
         public ShoppingCartItem GetByProductIdForUser(int productId, string userId)
         {
-            return _repository.Items.FirstOrDefault(i => i.ProductId == productId && i.UserId == userId);
+            var toReturn = _repository.Items.Include(i => i.Product)
+                                      .FirstOrDefault(i => i.ProductId == productId && i.UserId == userId);
+            return toReturn;
         }
 
         public void AddItem(ShoppingCartItem item)
@@ -44,7 +47,9 @@ namespace Store.Infrastructure.Repositories
 
         public List<ShoppingCartItem> GetItems(string userId)
         {
-            return _repository.Items.Where(i => i.UserId == userId).ToList();
+            return _repository.Items.Include(i => i.Product)
+                                    .Where(i => i.UserId == userId)
+                                    .ToList();
         }
 
         public void UpdateQuantity(ShoppingCartItem item, int quantity)
