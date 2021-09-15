@@ -6,9 +6,9 @@ namespace Store.Core.Interfaces
     public interface IShoppingCartRepository
     {
         void AddItem(ShoppingCartItem item);
-        void UpdateQuantity(int id, int quantity);
-        ShoppingCartItem GetById(int id);
+        void UpdateQuantity(ShoppingCartItem item, int quantity);
         ShoppingCartItem GetByIdForUser(int id, string userId);
+        ShoppingCartItem GetByProductIdForUser(int productId, string userId);
         List<ShoppingCartItem> GetItems(string userId);
         void ClearShoppingCart(string userId);
         void Save();

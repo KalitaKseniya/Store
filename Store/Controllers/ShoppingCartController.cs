@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Store.Core.DTO;
 using Store.Core.Entities;
@@ -8,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace Store.Controllers
 {
+    [Authorize(Roles = "Client")]
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/users/{user_id}/shopping_carts")]
+    [Route("api/v{version:apiVersion}/shopping_carts")]
 
     public class ShoppingCartController : Controller
     {
@@ -29,13 +31,18 @@ namespace Store.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// For the authorized user 
+        /// add a product to shopping cart (if wasn't in user's shopping cart)   
+        /// or update its quantity (if exists in user's shopping cart)  
+        /// </summary>
         [HttpPost]
-        public async Task<IActionResult> AddItem(string user_id, int productId, int quantity = 1)
+        public async Task<IActionResult> AddItem(int productId, int quantity = 1)
         {
-            var user = await _userManager.FindByIdAsync(user_id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if(user == null)
             {
-                return NotFound();
+                return Unauthorized();
             }
             var product = _productRepository.GetById(productId);
             if(product == null)
@@ -47,16 +54,25 @@ namespace Store.Controllers
             {
                 return BadRequest();
             }
-
             ShoppingCartItem item = new ShoppingCartItem()
             {
                 Quantity = quantity,
-                UserId = user_id,
+                UserId = user.Id,
                 ProductId = productId,
                 User = user,
                 Product = product
             };
-            _cartRepository.AddItem(item);
+
+            var itemInDb = _cartRepository.GetByProductIdForUser(productId, user.Id);
+            if (itemInDb == null)
+            {
+                  _cartRepository.AddItem(item);
+            }
+            else
+            {
+                _cartRepository.UpdateQuantity(item, quantity);
+            }
+           
             _cartRepository.Save();
             var itemToReturn = new ShoppingCartItemDto()
             {
@@ -68,16 +84,19 @@ namespace Store.Controllers
             return Ok(itemToReturn);
         }
 
+        /// <summary>
+        /// Get all shopping cart items of the authorized user 
+        /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetItems(string user_id)
+        public async Task<IActionResult> GetItems()
         {
-            var user = await _userManager.FindByIdAsync(user_id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user == null)
             {
-                return NotFound();
+                return Unauthorized();
             }
 
-            var items = _cartRepository.GetItems(user_id);
+            var items = _cartRepository.GetItems(user.Id);
             var itemsToReturn = items.Select(x => new
             {
                 Id = x.Id,
@@ -89,28 +108,35 @@ namespace Store.Controllers
 
         }
 
+
+        /// <summary>
+        /// Delete all shopping cart items for the authorized user 
+        /// </summary>
         [HttpDelete]
-        public async Task<IActionResult> ClearCart(string user_id)
+        public async Task<IActionResult> ClearCart()
         {
-            var user = await _userManager.FindByIdAsync(user_id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user == null)
             {
-                return NotFound();
+                return Unauthorized();
             }
-            _cartRepository.ClearShoppingCart(user_id);
+            _cartRepository.ClearShoppingCart(user.Id);
             _cartRepository.Save();
             return Ok();
         }
 
+        /// <summary>
+        /// Delete shopping cart item by id for the authorized user 
+        /// </summary>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem(string user_id, int id)
+        public async Task<IActionResult> DeleteItem(int id)
         {
-            var user = await _userManager.FindByIdAsync(user_id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user == null)
             {
-                return NotFound();
+                return Unauthorized();
             }
-            var item = _cartRepository.GetById(id);
+            var item = _cartRepository.GetByIdForUser(id, user.Id);
             if (item == null)
             {
                 return NotFound();
@@ -120,25 +146,32 @@ namespace Store.Controllers
             _cartRepository.Save();
             return Ok();
         }
-        
+
+        /// <summary>
+        /// Update the quantity of ShoppingCartItem with id = id for the authorized user 
+        /// </summary>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateQuantity(string user_id, int id, int quantity)
+        public async Task<IActionResult> UpdateQuantity(int id, int quantity)
         {
-            var user = await _userManager.FindByIdAsync(user_id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user == null)
             {
-                return NotFound();
+                return Unauthorized();
             }
 
-            var item = _cartRepository.GetByIdForUser(id, user_id);
+            var item = _cartRepository.GetByIdForUser(id, user.Id);
             if(item == null)
             {
                 return NotFound();
             }
-
-            _cartRepository.UpdateQuantity(id, quantity);
+            if(quantity < 0)
+            {
+                return BadRequest();
+            }
+            _cartRepository.UpdateQuantity(item, quantity);
             _cartRepository.Save();
             return Ok();
+
         }
     }
 }

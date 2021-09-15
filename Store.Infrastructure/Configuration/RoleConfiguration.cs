@@ -22,6 +22,11 @@ namespace Store.Infrastructure.Configuration
                 Id = adminRoleId,
                 Name = "Administrator",
                 NormalizedName = "ADMINISTRATOR"
+            }, 
+            new IdentityRole
+            {
+                Name = "Client",
+                NormalizedName = "CLIENT"
             }
         );
         }

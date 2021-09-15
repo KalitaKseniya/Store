@@ -13,14 +13,14 @@ namespace Store.Infrastructure.Repositories
             _repository = repository;
         }
 
-        public ShoppingCartItem GetById(int id)
-        {
-            return _repository.Items.FirstOrDefault(i => i.Id == id);
-        }
-        
         public ShoppingCartItem GetByIdForUser(int id, string userId)
         {
             return _repository.Items.FirstOrDefault(i => i.Id == id && i.UserId == userId);
+        }
+        
+        public ShoppingCartItem GetByProductIdForUser(int productId, string userId)
+        {
+            return _repository.Items.FirstOrDefault(i => i.ProductId == productId && i.UserId == userId);
         }
 
         public void AddItem(ShoppingCartItem item)
@@ -47,12 +47,19 @@ namespace Store.Infrastructure.Repositories
             return _repository.Items.Where(i => i.UserId == userId).ToList();
         }
 
-        public void UpdateQuantity(int id, int quantity)
+        public void UpdateQuantity(ShoppingCartItem item, int quantity)
         {
-            var item = GetById(id);
-            item.Quantity = quantity;
-            _repository.Items.Update(item);
+            if(quantity == 0)
+            {
+                DeleteItem(item);
+            }
+            else
+            {
+                item.Quantity = quantity;
+                _repository.Items.Update(item);
+            }
         }
+
         public void Save()
         {
             _repository.SaveChanges();
