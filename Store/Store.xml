@@ -126,7 +126,7 @@
         </member>
         <member name="M:Store.Controllers.ShoppingCartController.UpdateQuantity(System.Int32,System.Int32)">
             <summary>
-            Update the quantity of ShoppingCartItem with id = id for the authorized user 
+            Update the quantity of ShoppingCartItem by it's productId for the authorized user 
             </summary>
         </member>
         <member name="T:Store.Swagger.ConfigureSwaggerOptions">

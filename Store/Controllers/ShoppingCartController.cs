@@ -32,23 +32,6 @@ namespace Store.Controllers
             _logger = logger;
         }
 
-        [HttpGet("hello")]
-        public async Task<IActionResult> GetItem(int productId)
-        {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var item = _cartRepository.GetByProductIdForUser(productId, user.Id);
-            var itemToReturn = new ShoppingCartItemDto()
-            {
-                Id = item.Id,
-                ProductId = item.ProductId,
-                Quantity = item.Quantity,
-                ProductName = item.Product.Name,
-                ProductPrice = item.Product.Price
-            };
-                
-            return Ok(itemToReturn);
-        }
-
         /// <summary>
         /// For the authorized user 
         /// add a product to shopping cart (if wasn't in user's shopping cart)   
@@ -72,19 +55,19 @@ namespace Store.Controllers
             {
                 return BadRequest();
             }
-            ShoppingCartItem item = new ShoppingCartItem()
-            {
-                Quantity = quantity,
-                UserId = user.Id,
-                ProductId = productId,
-                User = user,
-                Product = product
-            };
 
-            var itemInDb = _cartRepository.GetByProductIdForUser(productId, user.Id);
-            if (itemInDb == null)
+            var item = _cartRepository.GetByProductIdForUser(productId, user.Id);
+            if (item == null)
             {
-                  _cartRepository.AddItem(item);
+                item = new ShoppingCartItem()
+                {
+                    Quantity = quantity,
+                    UserId = user.Id,
+                    ProductId = productId,
+                    User = user,
+                    Product = product
+                };
+                _cartRepository.AddItem(item);
             }
             else
             {
@@ -97,8 +80,8 @@ namespace Store.Controllers
                 Id = item.Id,
                 ProductId = item.ProductId,
                 Quantity = item.Quantity,
-                ProductName = product.Name,
-                ProductPrice = product.Price
+                ProductName = item.Product.Name,
+                ProductPrice = item.Product.Price
             };
             return Ok(itemToReturn);
         }
@@ -146,17 +129,17 @@ namespace Store.Controllers
         }
 
         /// <summary>
-        /// Delete shopping cart item by id for the authorized user 
+        /// Delete shopping cart item by it's productId for the authorized user 
         /// </summary>
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem(int id)
+        [HttpDelete("{productId}")]
+        public async Task<IActionResult> DeleteItem(int productId)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user == null)
             {
                 return Unauthorized();
             }
-            var item = _cartRepository.GetByIdForUser(id, user.Id);
+            var item = _cartRepository.GetByProductIdForUser(productId, user.Id);
             if (item == null)
             {
                 return NotFound();
@@ -168,10 +151,10 @@ namespace Store.Controllers
         }
 
         /// <summary>
-        /// Update the quantity of ShoppingCartItem with id = id for the authorized user 
+        /// Update the quantity of ShoppingCartItem by it's productId for the authorized user 
         /// </summary>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateQuantity(int id, int quantity)
+        [HttpPut("{productId}")]
+        public async Task<IActionResult> UpdateQuantity(int productId, int quantity)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user == null)
@@ -179,7 +162,7 @@ namespace Store.Controllers
                 return Unauthorized();
             }
 
-            var item = _cartRepository.GetByIdForUser(id, user.Id);
+            var item = _cartRepository.GetByProductIdForUser(productId, user.Id);
             if(item == null)
             {
                 return NotFound();

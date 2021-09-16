@@ -61,7 +61,6 @@ namespace Store.Infrastructure.Repositories
             else
             {
                 item.Quantity = quantity;
-                _repository.Items.Update(item);
             }
         }
 
