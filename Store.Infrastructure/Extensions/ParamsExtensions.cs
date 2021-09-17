@@ -9,7 +9,7 @@ namespace Store.Infrastructure.Extensions
 {
     public static class ParamsExtensions
     {
-        public static IQueryable<Category> Searching(this IQueryable<Category> categories, string search)
+        public static IQueryable<Category> Search(this IQueryable<Category> categories, string search)
         {
             if (string.IsNullOrWhiteSpace(search))
                 return categories;
@@ -18,7 +18,7 @@ namespace Store.Infrastructure.Extensions
                     c.Name.ToLower().Contains(search.Trim().ToLower()));
         }
 
-        public static IQueryable<T> Sorting<T>(this IQueryable<T> items,
+        public static IQueryable<T> Sort<T>(this IQueryable<T> items,
             string orderBy, string orderDir)
         {
             if (string.IsNullOrWhiteSpace(orderBy) || !IsValidProperty<T>(orderBy))
@@ -45,7 +45,7 @@ namespace Store.Infrastructure.Extensions
             return prop != null;
         }
 
-        public static IQueryable<Product> Searching(this IQueryable<Product> products, string search)
+        public static IQueryable<Product> Search(this IQueryable<Product> products, string search)
         {
             if (string.IsNullOrWhiteSpace(search))
                 return products;
@@ -54,22 +54,22 @@ namespace Store.Infrastructure.Extensions
                     p.Name.ToLower().Contains(search.Trim().ToLower()));
         }
 
-        public static IQueryable<Product> FilteringByPrice(this IQueryable<Product> products,
+        public static IQueryable<Product> FilterByPrice(this IQueryable<Product> products,
                                                            decimal minPrice,
                                                            decimal maxPrice)
             => products.Where(p => minPrice <= p.Price && p.Price <= maxPrice);
 
-        public static IQueryable<Product> FilteringByCategories(this IQueryable<Product> products,
+        public static IQueryable<Product> FilterByCategories(this IQueryable<Product> products,
                                                                 IEnumerable<int> categoryIds)
         {
             if (categoryIds == null)
             {
                 return products;
             }
-            return products.Where(p => categoryIds.Contains(p.CategoryId)); 
+            return products.Where(p => categoryIds.Contains(p.CategoryId));
         }
 
-        public static IQueryable<Provider> Searching(this IQueryable<Provider> providers, string search)
+        public static IQueryable<Provider> Search(this IQueryable<Provider> providers, string search)
         {
             if (string.IsNullOrWhiteSpace(search))
                 return providers;

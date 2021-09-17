@@ -6,7 +6,7 @@ using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Core.RequestFeatures;
 
-namespace Store.Controllers
+namespace Store.V1.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]

@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Core.RequestFeatures;
-using System.Collections.Generic;
 using Store.ModelBinders;
+using System.Collections.Generic;
 
-namespace Store.Controllers
+namespace Store.V1.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
@@ -34,13 +33,13 @@ namespace Store.Controllers
         public IActionResult GetProducts([FromQuery] ProductParams productParams,
                                                     [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> CategoryIds)
         {
-            if (!productParams.PriceRangeValid())
+            if (!productParams.IsPriceRangeValid())
             {
                 _logger.Error($"Invalid price range minPrice={productParams.MinPrice} > maxPrice = {productParams.MaxPrice}");
                 return BadRequest($"Invalid price range minPrice ={ productParams.MinPrice} > maxPrice = {productParams.MaxPrice}");
             }
-            PagedList<Product> products = _productRepository.GetAllForAllCategories(productParams, CategoryIds);
-            
+            PagedList<Product> products = _productRepository.GetForCategories(productParams, CategoryIds);
+
             if (products == null)
             {
                 _logger.Warn($"Categories with ids = {CategoryIds} contains no products in db.");

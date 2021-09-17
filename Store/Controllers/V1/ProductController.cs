@@ -6,7 +6,7 @@ using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Core.RequestFeatures;
 
-namespace Store.Controllers
+namespace Store.V1.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
@@ -32,34 +32,34 @@ namespace Store.Controllers
         [HttpGet]
         public IActionResult GetProductsForCategory(int category_id, [FromQuery] ProductParams productParams)
         {
-            if (!productParams.PriceRangeValid())
+            if (!productParams.IsPriceRangeValid())
             {
                 _logger.Error($"Invalid price range minPrice={productParams.MinPrice} > maxPrice={productParams.MaxPrice}");
                 return BadRequest($"Invalid price range minPrice ={ productParams.MinPrice} > maxPrice ={ productParams.MaxPrice}");
             }
-            
+
             var category = _categoryRepository.GetById(category_id);
             if (category == null)
             {
                 _logger.Error($"There is no category with the given id = {category_id} in db.");
                 return NotFound($"There is no category with the given id = {category_id} in db.");
             }
-            PagedList<Product> products = _productRepository.Get(category_id, productParams);
-            
-            if (products == null)
+            PagedList<Product> productsForCategory = _productRepository.GetForCategory(category_id, productParams);
+
+            if (productsForCategory == null)
             {
                 _logger.Warn($"Category with category_id = {category_id} contains no products in db.");
                 return NotFound($"Category with category_id = {category_id} contains no products in db.");
             }
-            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(products.MetaData));
-            return Ok(products);
+            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(productsForCategory.MetaData));
+            return Ok(productsForCategory);
         }
 
         /// <summary>
         /// Get the product by id for the specified category
         /// </summary>
         [HttpGet("{id}")]
-        public IActionResult GetProduct(int category_id, int id)
+        public IActionResult GetProductForCategory(int category_id, int id)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)
@@ -68,14 +68,14 @@ namespace Store.Controllers
                 return NotFound($"There is no category with the given id = {category_id} in db.");
             }
 
-            var product = _productRepository.GetById(category_id, id);
-            if (product == null)
+            var productForCategory = _productRepository.GetForCategoryById(category_id, id);
+            if (productForCategory == null)
             {
                 _logger.Error($"There is no product with id = {id} for category with the given category_id = {category_id} in db.");
                 return NotFound($"There is no product with id = {id} for category with the given category_id = {category_id} in db.");
             }
 
-            return Ok(product);
+            return Ok(productForCategory);
         }
 
 
@@ -83,7 +83,7 @@ namespace Store.Controllers
         /// Create a product for the specified category
         /// </summary>
         [HttpPost, Authorize(Roles = UserRoles.Administrator)]
-        public IActionResult CreateProduct(int category_id, [FromBody] ProductForCreationDto productDTO)
+        public IActionResult CreateProductForCategory(int category_id, [FromBody] ProductForCreationDto productDto)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)
@@ -91,12 +91,12 @@ namespace Store.Controllers
                 _logger.Error($"No category with the given id = {category_id}");
                 return NotFound($"No category with the given id = {category_id}");
             }
-            if (productDTO == null)
+            if (productDto == null)
             {
                 _logger.Error("Can't create product = null.");
                 return BadRequest("Product can't be null");
             }
-            var providerId = productDTO.ProviderId;
+            var providerId = productDto.ProviderId;
             var provider = _providerRepository.GetById(providerId);
             if (provider == null)
             {
@@ -105,12 +105,12 @@ namespace Store.Controllers
             }
             Product product = new Product
             {
-                Name = productDTO.Name,
-                Description = productDTO.Description,
-                Price = productDTO.Price,
+                Name = productDto.Name,
+                Description = productDto.Description,
+                Price = productDto.Price,
                 CategoryId = category_id,
-                ImagePath = productDTO.ImagePath,
-                ProviderId = productDTO.ProviderId
+                ImagePath = productDto.ImagePath,
+                ProviderId = productDto.ProviderId
             };
 
             _productRepository.Create(product);
@@ -131,7 +131,7 @@ namespace Store.Controllers
                 _logger.Error($"There is no category with the given id = {category_id} in db.");
                 return NotFound($"There is no category with the given id = {category_id} in db.");
             }
-            var product = _productRepository.GetById(category_id, id);
+            var product = _productRepository.GetForCategoryById(category_id, id);
             if (product == null)
             {
                 _logger.Error($"There is no product with id = {id} for category with the given category_id = {category_id} in db.");
@@ -148,7 +148,7 @@ namespace Store.Controllers
         /// Update the product with id = id for the specified category
         /// </summary>
         [HttpPut("{id}"), Authorize(Roles = UserRoles.Administrator)]
-        public IActionResult UpdateProductForCategory(int category_id, int id, [FromBody] ProductForUpdateDto productForUpdateDto)
+        public IActionResult UpdateProductForCategory(int category_id, int id, [FromBody] ProductForUpdateDto productDto)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)
@@ -156,25 +156,25 @@ namespace Store.Controllers
                 _logger.Error($"There is no category with the given id = {category_id} in db.");
                 return NotFound($"There is no category with the given id = {category_id} in db.");
             }
-            var provider = _providerRepository.GetById(productForUpdateDto.ProviderId);
-            if(provider == null)
+            var provider = _providerRepository.GetById(productDto.ProviderId);
+            if (provider == null)
             {
-                _logger.Error($"There is no provider with the given id = {productForUpdateDto.ProviderId} in db.");
-                return NotFound($"There is no category with the given id = {productForUpdateDto.ProviderId} in db.");
+                _logger.Error($"There is no provider with the given id = {productDto.ProviderId} in db.");
+                return NotFound($"There is no category with the given id = {productDto.ProviderId} in db.");
             }
 
-            var product = _productRepository.GetById(category_id, id);
+            var product = _productRepository.GetForCategoryById(category_id, id);
             if (product == null)
             {
                 _logger.Error($"There is no product with id = {id} for category with the given category_id = {category_id} in db.");
                 return NotFound($"There is no product with id = {id} for category with the given category_id = {category_id} in db.");
             }
 
-            product.Name = productForUpdateDto.Name;
-            product.Description = productForUpdateDto.Description;
-            product.Price = productForUpdateDto.Price;
-            product.ImagePath = productForUpdateDto.ImagePath;
-            product.ProviderId = productForUpdateDto.ProviderId;
+            product.Name = productDto.Name;
+            product.Description = productDto.Description;
+            product.Price = productDto.Price;
+            product.ImagePath = productDto.ImagePath;
+            product.ProviderId = productDto.ProviderId;
 
             _productRepository.Update(product);
             _productRepository.Save();

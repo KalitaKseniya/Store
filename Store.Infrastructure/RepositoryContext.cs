@@ -21,7 +21,7 @@ namespace Store.Infrastructure
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
-            
+
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder
@@ -37,11 +37,12 @@ namespace Store.Infrastructure
                          .HasOne(sci => sci.Product)
                          .WithMany(p => p.ShoppingCartItems)
                          .HasForeignKey(sci => sci.ProductId),
-                    j => {
-                        j.HasKey(k => k.Id );
+                    j =>
+                    {
+                        j.HasKey(k => k.Id);
                         j.ToTable("ShoppingCartItems");
                         j.Property(sci => sci.Quantity).HasDefaultValue(1);
-                     }
+                    }
                 );
         }
     }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -10,12 +11,13 @@ using Store.Application.Services;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Infrastructure;
+using Store.Infrastructure.Repositories;
 using System.Net;
 using System.Text;
 
 namespace Store.Extensions
 {
-    public static class ConfigureMain
+    public static class ConfigureCustomServices
     {
         public static void ConfigureExceptionHandler(this IApplicationBuilder app,
             ILoggerManager logger)
@@ -60,7 +62,7 @@ namespace Store.Extensions
                 });
         }
 
-        public static void ConfigureCurrencies(this IServiceCollection services)
+        public static void ConfigureCurrencyService(this IServiceCollection services)
             => services.AddScoped<ICurrencyService, CurrencyService>();
 
         public static void ConfigureIdentity(this IServiceCollection services)
@@ -84,7 +86,7 @@ namespace Store.Extensions
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
-            var secretKey = jwtSettings.GetSection("key").Value;
+            var secretKey = jwtSettings.GetSection("key").Value + jwtSettings.GetSection("key").Value;
 
             services.AddAuthentication(opt =>
             {
@@ -102,14 +104,14 @@ namespace Store.Extensions
 
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey + secretKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 };
             });
 
         }
 
         public static void ConfigureAuthentication(this IServiceCollection services) =>
-            services.AddScoped<IAuthenticationManager, Store.Application.Services.AuthenticationManager>();
+            services.AddScoped<IAuthenticationManager, Application.Services.AuthenticationManager>();
 
         public static void ConfigureCors(this IServiceCollection services, IConfiguration configuration) =>
             services.AddCors(options =>
@@ -120,7 +122,21 @@ namespace Store.Extensions
                 .AllowAnyHeader()
                 .WithExposedHeaders("pagination"));
             });
-           
+        public static IServiceCollection ConfigureLogger(this IServiceCollection services)
+            =>  services.AddScoped<ILoggerManager, LoggerManager>();
+
+        public static IServiceCollection ConfigureDI(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<RepositoryContext>(opt =>
+                    opt.UseSqlServer(configuration.GetConnectionString("sqlConnection")
+                    ));
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProviderRepository, ProviderRepository>();
+            services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            return services;
+        }
+
     }
 }
 

@@ -28,7 +28,7 @@ namespace Store.ModelBinders
                 return Task.CompletedTask;
             }
 
-            var genericType = 
+            var genericType =
                 bindingContext.ModelType.GetTypeInfo().GenericTypeArguments[0];
             var converter = TypeDescriptor.GetConverter(genericType);
 

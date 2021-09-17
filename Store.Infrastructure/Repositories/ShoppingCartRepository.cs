@@ -14,12 +14,12 @@ namespace Store.Infrastructure.Repositories
             _repository = repository;
         }
 
-        public ShoppingCartItem GetByIdForUser(int id, string userId)
+        public ShoppingCartItem GetById(int id, string userId)
         {
             return _repository.Items.FirstOrDefault(i => i.Id == id && i.UserId == userId);
         }
-        
-        public ShoppingCartItem GetByProductIdForUser(int productId, string userId)
+
+        public ShoppingCartItem GetByProductId(int productId, string userId)
         {
             var toReturn = _repository.Items.Include(i => i.Product)
                                       .FirstOrDefault(i => i.ProductId == productId && i.UserId == userId);
@@ -34,7 +34,7 @@ namespace Store.Infrastructure.Repositories
         public void ClearShoppingCart(string userId)
         {
             var userItems = GetItems(userId);
-            if(userItems != null)
+            if (userItems != null)
             {
                 _repository.RemoveRange(userItems);
             }
@@ -54,7 +54,7 @@ namespace Store.Infrastructure.Repositories
 
         public void UpdateQuantity(ShoppingCartItem item, int quantity)
         {
-            if(quantity == 0)
+            if (quantity == 0)
             {
                 DeleteItem(item);
             }

@@ -6,7 +6,7 @@ using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Core.RequestFeatures;
 
-namespace Store.Controllers
+namespace Store.V1.Controllers
 {
     [Authorize]
     [ApiController]
@@ -27,7 +27,7 @@ namespace Store.Controllers
         /// Get the list of all providers 
         /// </summary>
         [HttpGet]
-        public IActionResult GetProviders([FromQuery]ProviderParams providerParams)
+        public IActionResult GetProviders([FromQuery] ProviderParams providerParams)
         {
             var providers = _providerRepository.Get(providerParams);
             if (providers == null)
@@ -85,7 +85,6 @@ namespace Store.Controllers
         /// Update the provider with the specified id 
         /// </summary>
         [HttpPut("{id}"), Authorize(Roles = UserRoles.Administrator)]
-
         public IActionResult UpdateProvider(int id, ProviderForManipulationDto providerDto)
         {
             if (providerDto == null)

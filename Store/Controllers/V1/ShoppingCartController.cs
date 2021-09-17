@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Store.Controllers
+namespace Store.V1.Controllers
 {
     [Authorize(Roles = UserRoles.Client)]
     [ApiController]
@@ -38,25 +37,25 @@ namespace Store.Controllers
         /// or update its quantity (if exists in user's shopping cart)  
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> AddItem(int productId, int quantity = 1)
+        public async Task<IActionResult> AddShoppingCartItem(int productId, int quantity = 1)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if(user == null)
+            if (user == null)
             {
                 return Unauthorized();
             }
             var product = _productRepository.GetById(productId);
-            if(product == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            if(quantity < 1)
+            if (quantity < 1)
             {
                 return BadRequest();
             }
 
-            var item = _cartRepository.GetByProductIdForUser(productId, user.Id);
+            var item = _cartRepository.GetByProductId(productId, user.Id);
             if (item == null)
             {
                 item = new ShoppingCartItem()
@@ -73,7 +72,7 @@ namespace Store.Controllers
             {
                 _cartRepository.UpdateQuantity(item, quantity + item.Quantity);
             }
-           
+
             _cartRepository.Save();
             var itemToReturn = new ShoppingCartItemDto()
             {
@@ -90,7 +89,7 @@ namespace Store.Controllers
         /// Get all shopping cart items of the authorized user 
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetItems()
+        public async Task<IActionResult> GetShoppingCartItems()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user == null)
@@ -132,14 +131,14 @@ namespace Store.Controllers
         /// Delete shopping cart item by it's productId for the authorized user 
         /// </summary>
         [HttpDelete("{productId}")]
-        public async Task<IActionResult> DeleteItem(int productId)
+        public async Task<IActionResult> DeleteShoppingCartItem(int productId)
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             if (user == null)
             {
                 return Unauthorized();
             }
-            var item = _cartRepository.GetByProductIdForUser(productId, user.Id);
+            var item = _cartRepository.GetByProductId(productId, user.Id);
             if (item == null)
             {
                 return NotFound();
@@ -162,12 +161,12 @@ namespace Store.Controllers
                 return Unauthorized();
             }
 
-            var item = _cartRepository.GetByProductIdForUser(productId, user.Id);
-            if(item == null)
+            var item = _cartRepository.GetByProductId(productId, user.Id);
+            if (item == null)
             {
                 return NotFound();
             }
-            if(quantity < 0)
+            if (quantity < 0)
             {
                 return BadRequest();
             }

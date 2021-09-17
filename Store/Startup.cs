@@ -40,10 +40,10 @@ namespace Store
             services.ConfigureIdentity();
             services.ConfigureJWT(Configuration);
             services.ConfigureAuthentication();
-            services.RegisterInfrastructure(Configuration);
+            services.ConfigureDI(Configuration);
 
             services.ConfigureLogger();
-            services.ConfigureCurrencies();
+            services.ConfigureCurrencyService();
             services.ConfigureSwaggerVersioning();
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen(options =>

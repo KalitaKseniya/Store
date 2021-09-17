@@ -45,7 +45,7 @@ namespace Store.Controllers
                     token = await _authManager.CreateToken(),
                     minutesExpires = _configuration.GetSection("jwtSettings").GetSection("minutesExpires").Value,
                     roles = await _authManager.GetRoles()
-            };
+                };
                 return Ok(response);
             }
             _logger.Warn($"{nameof(AuthenticateUser)} Authenication failed. Username or password is incorrect");
@@ -64,7 +64,7 @@ namespace Store.Controllers
                 _logger.Error("UserForCreation can't be null.");
                 return BadRequest("UserForCreation can't be null.");
             }
-            User user = new User
+            User user = new()
             {
                 FirstName = userForCreationDTO.FirstName,
                 LastName = userForCreationDTO.LastName,

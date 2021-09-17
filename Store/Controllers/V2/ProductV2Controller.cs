@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Store.Core.Interfaces;
 using System.Threading.Tasks;
 
-namespace Store.Controllers
+namespace Store.V2.Controllers
 {
     [Authorize]
     [ApiController]
@@ -40,7 +40,7 @@ namespace Store.Controllers
                 return NotFound($"There is no category with id = {category_id} in db.");
             }
 
-            var product = _productRepository.GetById(category_id, id);
+            var product = _productRepository.GetForCategoryById(category_id, id);
             if (product == null)
             {
                 _logger.Error($"There is no product with id = {id} for the category with id = {category_id} in db.");

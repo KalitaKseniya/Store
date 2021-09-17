@@ -1,6 +1,5 @@
 ﻿using Store.Core.Entities;
 using Store.Core.RequestFeatures;
-using System.Linq;
 
 namespace Store.Core.Interfaces
 {

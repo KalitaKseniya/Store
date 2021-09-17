@@ -25,7 +25,7 @@ namespace Store.Application.Services
             _userManager = userManager;
         }
 
-        //может ли сюда прийти null??
+        //ToDo может ли сюда прийти null??
         public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
         {
             _user = await _userManager.FindByNameAsync(userForAuth.Username);
@@ -49,8 +49,8 @@ namespace Store.Application.Services
 
         private SigningCredentials GetSigningCredentials()
         {
-            var key = _configuration.GetSection("JwtSettings").GetSection("key").Value;
-            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key + key));
+            var key = _configuration.GetSection("JwtSettings").GetSection("key").Value + _configuration.GetSection("JwtSettings").GetSection("key").Value;
+            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
