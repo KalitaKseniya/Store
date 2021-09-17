@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using EventBus.RabbitMQ.Standard.Configuration;
+using EventBus.RabbitMQ.Standard.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -134,6 +136,15 @@ namespace Store.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProviderRepository, ProviderRepository>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            return services;
+        }
+
+        public static IServiceCollection ConfigureRabbitMq(this IServiceCollection services, IConfiguration configuration)
+        {
+            var rabbitMqOptions = configuration.GetSection("RabbitMq").Get<RabbitMqOptions>();
+
+            services.AddRabbitMqConnection(rabbitMqOptions);
+            IServiceCollection serviceCollection = services.AddRabbitMqRegistration(rabbitMqOptions);
             return services;
         }
 
