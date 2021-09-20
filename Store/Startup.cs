@@ -41,7 +41,6 @@ namespace Store
             services.ConfigureJWT(Configuration);
             services.ConfigureAuthentication();
             services.ConfigureDI(Configuration);
-            services.ConfigureRabbitMq(Configuration);
 
             services.ConfigureLogger();
             services.ConfigureCurrencyService();
