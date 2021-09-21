@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Core.RequestFeatures;
+using System.Threading.Tasks;
 
 namespace Store.V1.Controllers
 {
@@ -17,13 +19,16 @@ namespace Store.V1.Controllers
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IProviderRepository _providerRepository;
+        private readonly IPublishEndpoint _publishEndpoint;
         public ProductController(ILoggerManager logger, IProductRepository productRepository,
-            ICategoryRepository categoryRepository, IProviderRepository providerRepository)
+            ICategoryRepository categoryRepository, IProviderRepository providerRepository,
+            IPublishEndpoint publishEndpoint)
         {
             _logger = logger;
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _providerRepository = providerRepository;
+            _publishEndpoint = publishEndpoint;
         }
 
         /// <summary>
@@ -83,7 +88,7 @@ namespace Store.V1.Controllers
         /// Create a product for the specified category
         /// </summary>
         [HttpPost, Authorize(Roles = UserRoles.Administrator)]
-        public IActionResult CreateProductForCategory(int category_id, [FromBody] ProductForCreationDto productDto)
+        public async Task<IActionResult> CreateProductForCategory(int category_id, [FromBody] ProductForCreationDto productDto)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)
@@ -115,7 +120,7 @@ namespace Store.V1.Controllers
 
             _productRepository.Create(product);
             _productRepository.Save();
-
+            await _publishEndpoint.Publish<Product>(product);
             return Ok(product);
         }
 

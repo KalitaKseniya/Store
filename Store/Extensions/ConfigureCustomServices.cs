@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Infrastructure;
 using Store.Infrastructure.Repositories;
+using System;
 using System.Net;
 using System.Text;
 
@@ -134,6 +136,35 @@ namespace Store.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProviderRepository, ProviderRepository>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+            return services;
+        }
+
+        public static IServiceCollection ConfigureRabbitMQ(this IServiceCollection services)
+        {
+            services.AddMassTransit(config =>
+            {
+                config.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Host("amqp://guest:guest@localhost:5672");
+                });
+            });
+
+            services.AddMassTransitHostedService();
+            //var bus = Bus.Factory.CreateUsingRabbitMq(config =>
+            //{
+            //    config.Host("amqp://guest:guest@localhost:5672");
+
+            //    config.ReceiveEndpoint("temp-queue", c =>
+            //    {
+            //        c.Handler<Product>(ctx =>
+            //        {
+            //            return Console.Out.WriteLineAsync(ctx.Message.Name);
+            //        });
+            //    });
+            //});
+
+            //bus.Start();
+            //bus.Publish(new Product { Name = "test name" });
             return services;
         }
 
