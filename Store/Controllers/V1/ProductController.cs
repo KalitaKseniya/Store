@@ -32,6 +32,7 @@ namespace Store.V1.Controllers
             _publishEndpoint = publishEndpoint;
         }
 
+        #region public methods (HTTP methods)
         /// <summary>
         /// Get the list of all products for the specified category 
         /// </summary>
@@ -121,10 +122,9 @@ namespace Store.V1.Controllers
 
             _productRepository.Create(product);
             _productRepository.Save();
-            
-            var productForRabbitMQ = new ProductDto(product, "POST");
-            await _publishEndpoint.Publish(productForRabbitMQ);
-            
+
+            await SendToDataWarehouse(product, "POST");
+           
             return Ok(product);
         }
 
@@ -132,7 +132,7 @@ namespace Store.V1.Controllers
         /// Delete the product with id = id for the specified category
         /// </summary>
         [HttpDelete("{id}"), Authorize(Roles = UserRoles.Administrator)]
-        public IActionResult DeleteProductForCategory(int category_id, int id)
+        public async Task<IActionResult> DeleteProductForCategory(int category_id, int id)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)
@@ -150,6 +150,8 @@ namespace Store.V1.Controllers
             _productRepository.Delete(product);
             _productRepository.Save();
 
+            await SendToDataWarehouse(product, "DELETE");
+
             return NoContent();
         }
 
@@ -157,7 +159,7 @@ namespace Store.V1.Controllers
         /// Update the product with id = id for the specified category
         /// </summary>
         [HttpPut("{id}"), Authorize(Roles = UserRoles.Administrator)]
-        public IActionResult UpdateProductForCategory(int category_id, int id, [FromBody] ProductForUpdateDto productDto)
+        public async Task<IActionResult> UpdateProductForCategory(int category_id, int id, [FromBody] ProductForUpdateDto productDto)
         {
             var category = _categoryRepository.GetById(category_id);
             if (category == null)
@@ -188,10 +190,20 @@ namespace Store.V1.Controllers
             _productRepository.Update(product);
             _productRepository.Save();
 
+            await SendToDataWarehouse(product, "PUT");
+
+
             return NoContent();
         }
 
-    
-        
+        #endregion
+
+        #region private methods
+        private async Task SendToDataWarehouse(Product product, string operation) 
+        {
+            var productForRabbitMQ = new ProductDto(product, operation);
+            await _publishEndpoint.Publish(productForRabbitMQ);
+        } 
+        #endregion
     }
 }
