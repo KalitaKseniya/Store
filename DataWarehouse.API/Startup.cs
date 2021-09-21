@@ -9,8 +9,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NLog;
+using Store.Core.Interfaces;
+using Store.LoggerService;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +24,7 @@ namespace DataWarehouse.API
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(Directory.GetCurrentDirectory() + "/nlog.config");
             Configuration = configuration;
         }
 
@@ -28,7 +33,7 @@ namespace DataWarehouse.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddScoped<ILoggerManager, LoggerManager>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

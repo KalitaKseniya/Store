@@ -33,11 +33,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc" Version="5.0.2" />
-    <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
     <ProjectReference Include="..\Store.Application\Store.Application.csproj" />
     <ProjectReference Include="..\Store.Infrastructure\Store.Infrastructure.csproj" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using NLog;
 using Store.Core.Interfaces;
 
-namespace Store.Application.Services
+namespace Store.LoggerService
 {
     public class LoggerManager : ILoggerManager
     {

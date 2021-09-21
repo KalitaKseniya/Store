@@ -13,6 +13,7 @@ using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Infrastructure;
 using Store.Infrastructure.Repositories;
+using Store.LoggerService;
 using System;
 using System.Net;
 using System.Text;
