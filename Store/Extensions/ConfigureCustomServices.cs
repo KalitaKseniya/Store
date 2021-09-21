@@ -150,21 +150,7 @@ namespace Store.Extensions
             });
 
             services.AddMassTransitHostedService();
-            //var bus = Bus.Factory.CreateUsingRabbitMq(config =>
-            //{
-            //    config.Host("amqp://guest:guest@localhost:5672");
-
-            //    config.ReceiveEndpoint("temp-queue", c =>
-            //    {
-            //        c.Handler<Product>(ctx =>
-            //        {
-            //            return Console.Out.WriteLineAsync(ctx.Message.Name);
-            //        });
-            //    });
-            //});
-
-            //bus.Start();
-            //bus.Publish(new Product { Name = "test name" });
+         
             return services;
         }
 

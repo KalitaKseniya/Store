@@ -6,6 +6,7 @@ using Store.Core.DTO;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
 using Store.Core.RequestFeatures;
+using Store.Core.Shared;
 using System.Threading.Tasks;
 
 namespace Store.V1.Controllers
@@ -120,7 +121,10 @@ namespace Store.V1.Controllers
 
             _productRepository.Create(product);
             _productRepository.Save();
-            await _publishEndpoint.Publish<Product>(product);
+            
+            var productForRabbitMQ = new ProductDto(product, "POST");
+            await _publishEndpoint.Publish(productForRabbitMQ);
+            
             return Ok(product);
         }
 
@@ -187,5 +191,7 @@ namespace Store.V1.Controllers
             return NoContent();
         }
 
+    
+        
     }
 }
