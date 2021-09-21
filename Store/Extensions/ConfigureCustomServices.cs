@@ -14,7 +14,6 @@ using Store.Core.Interfaces;
 using Store.Infrastructure;
 using Store.Infrastructure.Repositories;
 using Store.LoggerService;
-using System;
 using System.Net;
 using System.Text;
 
@@ -126,7 +125,7 @@ namespace Store.Extensions
                 .WithExposedHeaders("pagination"));
             });
         public static IServiceCollection ConfigureLogger(this IServiceCollection services)
-            =>  services.AddScoped<ILoggerManager, LoggerManager>();
+            => services.AddScoped<ILoggerManager, LoggerManager>();
 
         public static IServiceCollection ConfigureDI(this IServiceCollection services, IConfiguration configuration)
         {
@@ -151,7 +150,7 @@ namespace Store.Extensions
             });
 
             services.AddMassTransitHostedService();
-         
+
             return services;
         }
 

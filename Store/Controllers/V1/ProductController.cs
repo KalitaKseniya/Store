@@ -124,7 +124,7 @@ namespace Store.V1.Controllers
             _productRepository.Save();
 
             await SendToDataWarehouse(product, "POST");
-           
+
             return Ok(product);
         }
 
@@ -199,11 +199,11 @@ namespace Store.V1.Controllers
         #endregion
 
         #region private methods
-        private async Task SendToDataWarehouse(Product product, string operation) 
+        private async Task SendToDataWarehouse(Product product, string operation)
         {
             var productForRabbitMQ = new ProductDto(product, operation);
             await _publishEndpoint.Publish(productForRabbitMQ);
-        } 
+        }
         #endregion
     }
 }
