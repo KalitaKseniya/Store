@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using DataWarehouse.API.Models;
+using MassTransit;
 using Newtonsoft.Json;
 using Store.Core.Interfaces;
 using Store.Core.Shared;
@@ -10,14 +11,45 @@ namespace DataWarehouse.API.Consumers
     public class ProductConsumer : IConsumer<ProductDto>
     {
         private readonly ILoggerManager _logger;
-        public ProductConsumer(ILoggerManager logger)
+        private readonly ProductService _productsService;
+        public ProductConsumer(ILoggerManager logger, ProductService productsService)
         {
             _logger = logger;
+            _productsService = productsService;
         }
         public async Task Consume(ConsumeContext<ProductDto> context)
         {
-            await Console.Out.WriteLineAsync(context.Message.Name);
-            _logger.Debug(JsonConvert.SerializeObject(context.Message));
+            var productDto = context.Message;
+            var product = new Product
+            {
+                CategoryId = productDto.CategoryId,
+                Price = productDto.Price,
+                ProductId = productDto.EntityId,
+                Description = productDto.Description,
+                ImagePath = productDto.ImagePath,
+                ProviderId = productDto.ProviderId,
+                Name = productDto.Name,
+                Operation = productDto.Operation,
+                Type = productDto.Type
+            };
+            await Console.Out.WriteLineAsync("Get:" + JsonConvert.SerializeObject(product));
+            _logger.Debug("Get:" + JsonConvert.SerializeObject(product));
+            
+            switch (productDto.Operation)
+            {
+                case "POST":
+                    await _productsService.Create(product);
+                    break;
+                case "PUT":
+                    await _productsService.Create(product); 
+                    break;
+                case "DELETE":
+                    await _productsService.Create(product); 
+                    break;
+                default:
+                    _logger.Warn($"Operation {productDto.Operation} not allowed");
+                    break;
+            }
         }
     }
 }

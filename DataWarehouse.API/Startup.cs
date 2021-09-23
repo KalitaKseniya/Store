@@ -10,6 +10,7 @@ using NLog;
 using Store.Core.Interfaces;
 using Store.LoggerService;
 using System.IO;
+using DataWarehouse.API.Models;
 
 namespace DataWarehouse.API
 {
@@ -27,6 +28,7 @@ namespace DataWarehouse.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ILoggerManager, LoggerManager>();
+            services.AddTransient<ProductService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
