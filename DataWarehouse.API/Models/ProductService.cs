@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ namespace DataWarehouse.API.Models
     public class ProductService
     {
         IMongoCollection<Product> Products;
-        public ProductService()
+        public ProductService(IConfiguration configuration)
         {
-            string connectionString = "mongodb+srv://admin:admin@storedatawarehouse.fylai.mongodb.net/StoreDataWarehouse?retryWrites=true&w=majority";
+            string connectionString = configuration.GetConnectionString("MongoDBConnection");
             var connection = new MongoUrlBuilder(connectionString);
 
             MongoClient client = new MongoClient(connectionString);

@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json;
 using Store.Core.Entities;
 
 namespace Store.Core.Shared
@@ -12,6 +13,7 @@ namespace Store.Core.Shared
         public string ImagePath { get; set; }
         public int ProviderId { get; set; }
 
+        [JsonConstructor]
         public ProductDto()
         {
 
