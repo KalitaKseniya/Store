@@ -38,13 +38,13 @@ namespace DataWarehouse.API.Consumers
             switch (productDto.Operation)
             {
                 case "POST":
-                    await _productsService.Create(product);
+                    await _productsService.CreateAsync(product);
                     break;
                 case "PUT":
-                    await _productsService.Create(product); 
+                    await _productsService.CreateAsync(product); 
                     break;
                 case "DELETE":
-                    await _productsService.Create(product); 
+                    await _productsService.CreateAsync(product); 
                     break;
                 default:
                     _logger.Warn($"Operation {productDto.Operation} not allowed");

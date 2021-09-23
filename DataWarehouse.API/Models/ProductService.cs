@@ -22,7 +22,7 @@ namespace DataWarehouse.API.Models
             Products = database.GetCollection<Product>("Products");
         }
 
-        public async Task<IEnumerable<Product>> GetProducts()
+        public async Task<IEnumerable<Product>> GetProductsAsync()
         {
             var builder = new FilterDefinitionBuilder<Product>();
             var filter = builder.Empty;
@@ -30,22 +30,22 @@ namespace DataWarehouse.API.Models
             return await Products.Find(filter).ToListAsync();
         }
         
-        public async Task<Product> GetProduct(string id)
+        public async Task<Product> GetProductAsync(string id)
         {
             return await Products.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
-        public async Task Create(Product product)
+        public async Task CreateAsync(Product product)
         {
              await Products.InsertOneAsync(product);
         }
         
-        public async Task Update(Product product)
+        public async Task UpdateAsync(Product product)
         {
             await Products.ReplaceOneAsync(new BsonDocument("_id", new ObjectId(product.Id)), product);
         }
         
-        public async Task Remove(string id)
+        public async Task RemoveAsync(string id)
         {
             await Products.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
         }
