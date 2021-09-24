@@ -38,11 +38,7 @@ namespace DataWarehouse.API.Consumers
             switch (productDto.Operation)
             {
                 case "POST":
-                    await _productsService.CreateAsync(product);
-                    break;
                 case "PUT":
-                    await _productsService.CreateAsync(product); 
-                    break;
                 case "DELETE":
                     await _productsService.CreateAsync(product); 
                     break;
