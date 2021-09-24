@@ -363,3 +363,8 @@ MigrationBackup/
 FodyWeavers.xsd
 /Store/.config/dotnet-tools.json
 /Store/Properties
+
+# Settings
+
+appsettings.json
+appsettings.Development.json
