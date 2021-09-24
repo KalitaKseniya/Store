@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace DataWarehouse.API.Models
 {
@@ -16,5 +17,10 @@ namespace DataWarehouse.API.Models
         public int CategoryId { get; set; }
         public string ImagePath { get; set; }
         public int ProviderId { get; set; }
+        public string ImageId { get; set; }
+        public bool HasImage()
+        {
+            return !String.IsNullOrWhiteSpace(ImageId)
+        }
     }
 }
