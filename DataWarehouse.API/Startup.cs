@@ -39,7 +39,8 @@ namespace DataWarehouse.API
                 config.AddConsumer<ProductConsumer>();
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
-                    cfg.Host("amqp://guest:guest@localhost:5672");
+                    var rabbitMqConnectionStr = Configuration.GetConnectionString("rabbitMqConnection");
+                    cfg.Host(rabbitMqConnectionStr);
                     cfg.ReceiveEndpoint("product-queue", c =>
                     {
                         c.ConfigureConsumer<ProductConsumer>(ctx);

@@ -139,13 +139,14 @@ namespace Store.Extensions
             return services;
         }
 
-        public static IServiceCollection ConfigureRabbitMQ(this IServiceCollection services)
+        public static IServiceCollection ConfigureRabbitMQ(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMassTransit(config =>
             {
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
-                    cfg.Host("amqp://guest:guest@localhost:5672");
+                    var rabbitMqConnectionStr = configuration.GetConnectionString("rabbitMqConnection");
+                    cfg.Host(rabbitMqConnectionStr);
                 });
             });
 
