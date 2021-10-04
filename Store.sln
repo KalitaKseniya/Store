@@ -16,9 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataWarehouse.API", "DataWarehouse.API\DataWarehouse.API.csproj", "{CD80944A-9B61-49F6-8682-1D5794B50C3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataWarehouse.API", "DataWarehouse.API\DataWarehouse.API.csproj", "{CD80944A-9B61-49F6-8682-1D5794B50C3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{5458924B-F0B4-4669-A0D2-05C4FC9E4297}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{5458924B-F0B4-4669-A0D2-05C4FC9E4297}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,6 +11,8 @@ using Store.Core.Interfaces;
 using Store.LoggerService;
 using System.IO;
 using DataWarehouse.API.Models;
+using System.Reflection;
+using System;
 
 namespace DataWarehouse.API
 {
@@ -30,10 +32,13 @@ namespace DataWarehouse.API
             services.AddScoped<ILoggerManager, LoggerManager>();
             services.AddTransient<ProductService>();
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(s =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DataWarehouse.API", Version = "v1" });
+                s.SwaggerDoc("v1", new OpenApiInfo { Title = "DataWarehouse.API", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"; 
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile); s.IncludeXmlComments(xmlPath);
             });
+
             services.AddMassTransit(config =>
             {
                 config.AddConsumer<ProductConsumer>();
