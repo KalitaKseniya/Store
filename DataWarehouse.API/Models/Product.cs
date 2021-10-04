@@ -20,7 +20,7 @@ namespace DataWarehouse.API.Models
         public string ImageId { get; set; }
         public bool HasImage()
         {
-            return !String.IsNullOrWhiteSpace(ImageId)
+            return !String.IsNullOrWhiteSpace(ImageId);
         }
     }
 }

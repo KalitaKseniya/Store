@@ -2,8 +2,10 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace DataWarehouse.API.Models
@@ -38,9 +40,10 @@ namespace DataWarehouse.API.Models
             return await Products.Find(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
-        public async Task CreateAsync(Product product)
+        public async Task<string> CreateAsync(Product product)
         {
              await Products.InsertOneAsync(product);
+             return product.Id;
         }
         
         public async Task UpdateAsync(Product product)
@@ -53,26 +56,42 @@ namespace DataWarehouse.API.Models
             await Products.DeleteOneAsync(new BsonDocument("_id", new ObjectId(id)));
         }
 
-        public async Task<byte[]> GetImage(string id, StreamConfigurationProvider imageStream, string imageName)
+        public async Task<byte[]> GetImage(string id)
         {
             return await gridFS.DownloadAsBytesAsync(new ObjectId(id));
         }  
         
-        public async Task StoreImage(string id, Stream imageStream, string imageName)
+        public async Task<string> StoreImage(string id, string url, string imageName)
         {
+            if (!IsValidUrl(url))
+            {
+                return null;
+            }
             Product p = await GetProductAsync(id);
             if (p.HasImage())
             {
                 await gridFS.DeleteAsync(new ObjectId(p.ImageId));
             }
-
-            ObjectId imageId = await gridFS.UploadFromStreamAsync(imageName, imageStream);
+            byte[] binaryImage = null;
+            using (var webClient = new WebClient())
+            {
+                binaryImage = webClient.DownloadData(url);
+            }
+            ObjectId imageId = await gridFS.UploadFromBytesAsync(imageName, binaryImage);
 
             p.ImageId = imageId.ToString();
             var filter = Builders<Product>.Filter.Eq("_id", new ObjectId(p.Id));
             var update = Builders<Product>.Update.Set("ImageId", p.ImageId);
 
             await Products.UpdateOneAsync(filter, update);
+            return p.ImageId;
+        }
+
+        private bool IsValidUrl(string url)
+        {
+            Uri uriResult;
+            return Uri.TryCreate(url, UriKind.Absolute, out uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
         }
 
 

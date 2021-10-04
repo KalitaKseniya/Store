@@ -40,7 +40,15 @@ namespace DataWarehouse.API.Consumers
                 case "POST":
                 case "PUT":
                 case "DELETE":
-                    await _productsService.CreateAsync(product); 
+                    try
+                    {
+                        string id = await _productsService.CreateAsync(product);
+                        await _productsService.StoreImage(id, product.ImagePath, product.Name + DateTime.Now);
+                    }
+                    catch(Exception ex)
+                    {
+                        _logger.Error($"Exception: {ex}");
+                    }
                     break;
                 default:
                     _logger.Warn($"Operation {productDto.Operation} not allowed");

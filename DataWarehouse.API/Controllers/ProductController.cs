@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store.Core.Shared;
+using System;
 using System.Threading.Tasks;
 
 namespace DataWarehouse.API.Controllers
@@ -26,8 +27,8 @@ namespace DataWarehouse.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _productsService.GetProductsAsync();
-            return Ok(products);
+             var products = await _productsService.GetProductsAsync();
+             return Ok(products);
         }
 
         /// <summary>
@@ -102,6 +103,32 @@ namespace DataWarehouse.API.Controllers
             await _productsService.UpdateAsync(product);
             return Ok();
         }
+
+        [HttpPost("{id}/image")]
+        public async Task<IActionResult> StoreImageForProduct(string id, string url)
+        {
+            var product = await _productsService.GetProductAsync(id);
+            if(product == null)
+            {
+                return NotFound();
+            }
+            var imageId = await _productsService.StoreImage(id, product.ImagePath, product.Name + DateTime.Now);
+            return Ok(new {imageId = imageId });
+        }
+
+        [HttpGet("{id}/image")]
+        public async Task<IActionResult> GetImageForProduct(string id)
+        {
+            var product = await _productsService.GetProductAsync(id);
+            if(product == null || !product.HasImage())
+            {
+                return NotFound();
+            }
+
+            var img = await _productsService.GetImage(product.ImageId);
+            
+            return File(img, "image/jpg");
+        } 
 
     }
 }
