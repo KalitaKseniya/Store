@@ -35,7 +35,8 @@ namespace Store.V1.Controllers
                 _logger.Info("There are no providers in db");
                 return NotFound();
             }
-            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(providers.MetaData));
+            //todo uncomment
+            //Response.Headers.Add("Pagination", JsonConvert.SerializeObject(providers.MetaData));
             return Ok(providers);
         }
 

@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataWarehouse.API", "DataWa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{5458924B-F0B4-4669-A0D2-05C4FC9E4297}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.Tests", "Store.Tests\Store.Tests.csproj", "{AF8AED7F-3DB6-4DFE-AE74-E5D9F921DD00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{5458924B-F0B4-4669-A0D2-05C4FC9E4297}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5458924B-F0B4-4669-A0D2-05C4FC9E4297}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5458924B-F0B4-4669-A0D2-05C4FC9E4297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF8AED7F-3DB6-4DFE-AE74-E5D9F921DD00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF8AED7F-3DB6-4DFE-AE74-E5D9F921DD00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF8AED7F-3DB6-4DFE-AE74-E5D9F921DD00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF8AED7F-3DB6-4DFE-AE74-E5D9F921DD00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
