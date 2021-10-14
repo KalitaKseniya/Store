@@ -7,7 +7,7 @@ namespace Store.Infrastructure.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly RepositoryContext repository;
+        private readonly RepositoryContext repository;//test test test
         public CategoryRepository(RepositoryContext _repository)
         {
             repository = _repository;
