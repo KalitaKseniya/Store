@@ -63,7 +63,8 @@ namespace Store.Application.Services
                 Curr = currName,
                 Description = product.Description,
                 Name = product.Name,
-                Price = Convert(currPrice, product.Price)
+                Price = Convert(currPrice, product.Price),
+                ImagePath = product.ImagePath
             };
         }
         protected decimal Convert(decimal currPrice, decimal initPrice)

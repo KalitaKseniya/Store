@@ -17,22 +17,22 @@ namespace Store.Application.Services
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
-        private User _user; 
-        
+        private User _user;
+
         public AuthenticationManager(UserManager<User> userManager, IConfiguration configuration)
         {
             _configuration = configuration;
             _userManager = userManager;
         }
-        
-        //может ли сюда прийти null??
+
+        //ToDo может ли сюда прийти null??
         public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuth)
         {
             _user = await _userManager.FindByNameAsync(userForAuth.Username);
 
             return _user != null && await _userManager.CheckPasswordAsync(_user, userForAuth.Password);
         }
-        
+
         public async Task<string> CreateToken()
         {
             var SigningCredentials = GetSigningCredentials();
@@ -42,10 +42,15 @@ namespace Store.Application.Services
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
+        public async Task<IList<string>> GetRoles()
+        {
+            return await _userManager.GetRolesAsync(_user);
+        }
+
         private SigningCredentials GetSigningCredentials()
         {
-            var key = _configuration.GetSection("JwtSettings").GetSection("key").Value;
-            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key+key));
+            var key = _configuration.GetSection("JwtSettings").GetSection("key").Value + _configuration.GetSection("JwtSettings").GetSection("key").Value;
+            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }

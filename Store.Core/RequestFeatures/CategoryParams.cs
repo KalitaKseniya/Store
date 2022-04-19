@@ -1,8 +1,8 @@
 ﻿
 namespace Store.Core.RequestFeatures
 {
-    public class CategoryParams: RequestParams
+    public class CategoryParams : RequestParams
     {
-        public string Search { get; set; } 
+        public string Search { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace Store.Controllers
         private readonly IConfiguration _configuration;
 
         public AuthenticationController(ILoggerManager logger, UserManager<User> userManager,
-            IAuthenticationManager authManager, RoleManager<IdentityRole> roleManager, 
+            IAuthenticationManager authManager, RoleManager<IdentityRole> roleManager,
             IConfiguration configuration)
         {
             _logger = logger;
@@ -36,18 +36,20 @@ namespace Store.Controllers
         /// </summary>
         /// <returns>Token if the user exists</returns>
         [HttpPost("login")]
-        public async Task<IActionResult> AuthenticateUser([FromBody]UserForAuthenticationDto userForAuth)
+        public async Task<IActionResult> AuthenticateUser([FromBody] UserForAuthenticationDto userForAuth)
         {
             if (userForAuth != null && await _authManager.ValidateUser(userForAuth))
             {
-                var response = new { 
+                var response = new
+                {
                     token = await _authManager.CreateToken(),
-                    minutesExpires = _configuration.GetSection("jwtSettings").GetSection("minutesExpires").Value
+                    minutesExpires = _configuration.GetSection("jwtSettings").GetSection("minutesExpires").Value,
+                    roles = await _authManager.GetRoles()
                 };
                 return Ok(response);
             }
             _logger.Warn($"{nameof(AuthenticateUser)} Authenication failed. Username or password is incorrect");
-            
+
             return Unauthorized();
         }
 
@@ -55,14 +57,14 @@ namespace Store.Controllers
         /// Registration of the user
         /// </summary>
         [HttpPost("register"), Authorize(Roles = UserRoles.Administrator)]
-        public async Task<IActionResult> RegisterUser([FromBody]UserForCreationDto userForCreationDTO)
+        public async Task<IActionResult> RegisterUser([FromBody] UserForCreationDto userForCreationDTO)
         {
-            if(userForCreationDTO == null)
+            if (userForCreationDTO == null)
             {
                 _logger.Error("UserForCreation can't be null.");
                 return BadRequest("UserForCreation can't be null.");
             }
-            User user = new User
+            User user = new()
             {
                 FirstName = userForCreationDTO.FirstName,
                 LastName = userForCreationDTO.LastName,
@@ -71,17 +73,17 @@ namespace Store.Controllers
                 PhoneNumber = userForCreationDTO.PhoneNumber,
                 NormalizedUserName = userForCreationDTO.NormalizedUserName
             };
-            
-            foreach(var role in userForCreationDTO.Roles)
+
+            foreach (var role in userForCreationDTO.Roles)
             {
                 //now Administrator and Manager roles are available
-                if(!await _roleManager.RoleExistsAsync(role))
+                if (!await _roleManager.RoleExistsAsync(role))
                 {
                     _logger.Warn($"Specified role(s)={role} not found in db.");
                     return BadRequest("Specified role(s) not found in db.");
                 }
             }
-            
+
             var result = await _userManager.CreateAsync(user, userForCreationDTO.Password);
             if (!result.Succeeded)
             {
@@ -92,7 +94,7 @@ namespace Store.Controllers
                 return BadRequest(ModelState);
             }
             await _userManager.AddToRolesAsync(user, userForCreationDTO.Roles);
-            
+
             return Created("Created", user);
         }
     }

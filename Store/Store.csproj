@@ -17,12 +17,24 @@
     <DocumentationFile>Store.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.json" />
+  </ItemGroup>
 	
   <ItemGroup>
     <Resource Include="nlog.config" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="7.2.2" />
+    <PackageReference Include="MassTransit.AspNetCore" Version="7.2.2" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.2.2" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="7.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
@@ -33,6 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
     <ProjectReference Include="..\Store.Application\Store.Application.csproj" />
     <ProjectReference Include="..\Store.Infrastructure\Store.Infrastructure.csproj" />
   </ItemGroup>

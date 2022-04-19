@@ -4,14 +4,11 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using NLog;
-using Store.Application;
 using Store.Core.Interfaces;
 using Store.Extensions;
-using Store.Infrastructure.Extensions;
 using Store.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
@@ -41,10 +38,10 @@ namespace Store
             services.ConfigureIdentity();
             services.ConfigureJWT(Configuration);
             services.ConfigureAuthentication();
-            services.RegisterInfrastructure(Configuration);
+            services.ConfigureDI(Configuration);
 
             services.ConfigureLogger();
-            services.ConfigureCurrencies();
+            services.ConfigureCurrencyService();
             services.ConfigureSwaggerVersioning();
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen(options =>
@@ -83,6 +80,7 @@ namespace Store
                     }
                 });
             });
+            services.ConfigureRabbitMQ(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

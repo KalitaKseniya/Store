@@ -26,7 +26,7 @@ namespace Store.Infrastructure.Configuration
                 SecurityStamp = new Guid().ToString("D")
             };
             admin.PasswordHash = PassGenerate(admin);
-            builder.HasData(admin); 
+            builder.HasData(admin);
         }
 
         private string PassGenerate(User user)

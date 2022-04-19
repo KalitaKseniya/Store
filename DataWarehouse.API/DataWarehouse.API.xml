@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DataWarehouse.API</name>
+    </assembly>
+    <members>
+        <member name="M:DataWarehouse.API.Controllers.ProductController.GetProducts">
+            <summary>
+            Get the list of all products from MongoDB
+            </summary>
+        </member>
+        <member name="M:DataWarehouse.API.Controllers.ProductController.GetProduct(System.String)">
+            <summary>
+            Get the product by id from MongoDB
+            </summary>
+        </member>
+        <member name="M:DataWarehouse.API.Controllers.ProductController.CreateProduct(Store.Core.Shared.ProductDto)">
+            <summary>
+            Create a product in MongoDB
+            </summary>
+        </member>
+        <member name="M:DataWarehouse.API.Controllers.ProductController.DeleteProduct(System.String)">
+            <summary>
+            Delete the product from MongoDB
+            </summary>
+        </member>
+        <member name="M:DataWarehouse.API.Controllers.ProductController.UpdateProduct(System.String,Store.Core.Shared.ProductDto)">
+            <summary>
+            Update the product in MongoDB
+            </summary>
+        </member>
+        <member name="M:DataWarehouse.API.Controllers.ProductController.StoreImageForProduct(System.String,System.String)">
+            <summary>
+            Save the image located on url to MongoDB for product with id = id
+            </summary>
+        </member>
+        <member name="M:DataWarehouse.API.Controllers.ProductController.GetImageForProduct(System.String)">
+            <summary>
+            Get the image for product with id = id
+            </summary>
+        </member>
+    </members>
+</doc>

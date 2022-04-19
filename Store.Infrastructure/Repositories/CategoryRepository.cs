@@ -15,9 +15,9 @@ namespace Store.Infrastructure.Repositories
         public PagedList<Category> Get(CategoryParams categoryParams)
         {
             var categoriesAfterSearch = repository.Categories
-                                         .Searching(categoryParams.Search)
-                                         .Sorting(categoryParams.OrderBy, categoryParams.OrderDir);
-            return PagedList<Category>.ToPagedList(categoriesAfterSearch, 
+                                         .Search(categoryParams.Search)
+                                         .Sort(categoryParams.OrderBy, categoryParams.OrderDir);
+            return PagedList<Category>.ToPagedList(categoriesAfterSearch,
                 categoryParams.PageSize, categoryParams.PageNumber);
         }
 

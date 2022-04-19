@@ -49,16 +49,23 @@ namespace Store.Infrastructure.Migrations
                         new
                         {
                             Id = "7D9B7113-A8F8-4035-99A7-A20DD400F6A3",
-                            ConcurrencyStamp = "c6718be9-e421-4c51-b392-c3a4145ecf27",
+                            ConcurrencyStamp = "895d453f-caad-489c-8ea0-8dbbf468c520",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "2301D884-221A-4E7D-B509-0113DCC043E1",
-                            ConcurrencyStamp = "fc9ef085-1dcc-4f7b-8d16-6add9420d2c4",
+                            ConcurrencyStamp = "5a7f4ec8-8266-4234-9467-54bab14e0b0c",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "ab9981f8-626b-4f21-be32-25a716c6d939",
+                            ConcurrencyStamp = "918da7a6-b914-4158-894c-089257e94b36",
+                            Name = "Client",
+                            NormalizedName = "CLIENT"
                         });
                 });
 
@@ -218,11 +225,18 @@ namespace Store.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(15, 2)
+                        .HasColumnType("decimal(15,2)");
+
+                    b.Property<int>("ProviderId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -235,7 +249,8 @@ namespace Store.Infrastructure.Migrations
                             CategoryId = 1,
                             Description = "A beautiful black dress.",
                             Name = "Little black dress",
-                            Price = 100m
+                            Price = 100m,
+                            ProviderId = 0
                         },
                         new
                         {
@@ -243,7 +258,8 @@ namespace Store.Infrastructure.Migrations
                             CategoryId = 1,
                             Description = "A long green dress for little girls. 100% cotton.",
                             Name = "Green dress",
-                            Price = 50m
+                            Price = 50m,
+                            ProviderId = 0
                         },
                         new
                         {
@@ -251,7 +267,8 @@ namespace Store.Infrastructure.Migrations
                             CategoryId = 2,
                             Description = "Skinny blue jeans.",
                             Name = "Skinny jeans",
-                            Price = 40m
+                            Price = 40m,
+                            ProviderId = 0
                         },
                         new
                         {
@@ -259,7 +276,8 @@ namespace Store.Infrastructure.Migrations
                             CategoryId = 3,
                             Description = "Leggins for sport.",
                             Name = "Leggins",
-                            Price = 15m
+                            Price = 15m,
+                            ProviderId = 0
                         },
                         new
                         {
@@ -267,7 +285,8 @@ namespace Store.Infrastructure.Migrations
                             CategoryId = 3,
                             Description = "A black T-shirt for sport.",
                             Name = "T-shirt Black",
-                            Price = 25m
+                            Price = 25m,
+                            ProviderId = 0
                         },
                         new
                         {
@@ -275,8 +294,64 @@ namespace Store.Infrastructure.Migrations
                             CategoryId = 3,
                             Description = "A white T-shirt for sport.",
                             Name = "T-shirt White",
-                            Price = 22m
+                            Price = 22m,
+                            ProviderId = 0
                         });
+                });
+
+            modelBuilder.Entity("Store.Core.Entities.Provider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Info")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Providers");
+                });
+
+            modelBuilder.Entity("Store.Core.Entities.ShoppingCartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("Store.Core.Entities.User", b =>
@@ -354,7 +429,7 @@ namespace Store.Infrastructure.Migrations
                         {
                             Id = "B22698B8-42A2-4115-9631-1C2D1E2AC5F7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aa491501-b592-40b9-ae40-40caf3630684",
+                            ConcurrencyStamp = "7ad58226-4556-4a53-81d9-cd2563c5bfa1",
                             Email = "Admin@Admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -362,7 +437,7 @@ namespace Store.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKqGEJnw/lddMyg61IE+8rUdNDhZU/3WjiS9DcHn7s2XqA/I7CVYD0yAsf3LWo4G4A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECgV86fT/nOBHZtzPSrSNbh1PvZjLKxk72/78bi3ZRQHzvuUtz9Ky1RguEyOUjU1tg==",
                             PhoneNumber = "XXXXXXXXXXXXX",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "00000000-0000-0000-0000-000000000000",
@@ -420,6 +495,33 @@ namespace Store.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Store.Core.Entities.ShoppingCartItem", b =>
+                {
+                    b.HasOne("Store.Core.Entities.Product", "Product")
+                        .WithMany("ShoppingCartItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Store.Core.Entities.User", "User")
+                        .WithMany("ShoppingCartItems")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Store.Core.Entities.Product", b =>
+                {
+                    b.Navigation("ShoppingCartItems");
+                });
+
+            modelBuilder.Entity("Store.Core.Entities.User", b =>
+                {
+                    b.Navigation("ShoppingCartItems");
                 });
 #pragma warning restore 612, 618
         }
